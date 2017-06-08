@@ -1,0 +1,24 @@
+arrayScoreCard = Array("G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "AF", "AP", "AS", "AV", "AW")
+"G", 	Volume
+"H",	Adj Close 
+"I", 	Daily Diff Price
+"J", 	Upper
+"K", 	Lower
+"L", 	Mid
+"M", 	Dispersion
+"N", 	Daily Diff Dispersion
+"O", 	Daily Diff UBand
+"P", 	Daily Diff LBand
+"Q", 	Trade Count
+"R", 	Trade Value
+"S", 	Avg Per Trade
+"AF", 	% Price Oscillator
+"AP", 	Relative Strength
+"AS", 	Chalkin MF Volume
+"AV", 	Trade MF Oscillator
+"AW"	Price Volatility
+"AX"	Slope Dispersion
+"AY"	Price Volatility
+
+SPL.AX [n-name][d1-Last trade Date][t1-Last trade time][l1-Last trade Price][o-open][h-high][g-low][c1-change][p2-change in percent][w-52-week Range][j1 market cap][r-P/E Ratio][y-Dividend yield][r5-PEG ration][m3-50-day MA][m8-% chg from 50 day MA][m4-200-day MA][m6% chg from 200 day MA]
+http://download.finance.yahoo.com/d/quotes.csv?s=SPL.AX&f=nd1t1l1ohgc1p2wj1ryr5m3m8m4m6
