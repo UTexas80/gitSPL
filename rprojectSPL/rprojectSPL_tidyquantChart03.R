@@ -1,12 +1,29 @@
+#install.packages('quantmod')
 # Loads tidyquant, tidyverse, lubridate, quantmod, TTR, and xts
 library(tidyquant)
+library(caTools)
+library(ggplot2) 
+library(plotly)
 
+# Setup dates for zoom window
+#end <- ymd("2017-10-30")
+end <-  today()
+from <- today() - years(10)
+start <- end - weeks(52)
+
+# Get SPL Stock Prices
 SPL <- tq_get("SPL.AX")
+#SPL <- tq_get("SPL.AX", get = "stock.prices", from = from)
+#SPL <- tq_get("SPL.AX", get = "stock.prices", from = "2010-05-19", to = "2017-10-30")
+
 SPL
+#Just the closing price
+#SPL$close
+
 #'
 # SMA
 SPL %>%
-   ggplot(aes(x = date, y = adjusted)) +
+   ggplot(aes(x = date, y = close)) +
    geom_line() +                         # Plot stock price
    geom_ma(ma_fun = SMA, n = 50) +                 # Plot 50-day SMA
    geom_ma(ma_fun = SMA, n = 200, color = "red") + # Plot 200-day SMA
@@ -82,7 +99,7 @@ SPL<- tq_get("SPL.AX", get  = "stock.prices", from = "2012-01-01", to   = "2017-
 
 # Example 1: Annual Returns
 #SPL %>%
-  SPL_annual_returns <- SPL %>%
+SPL_annual_returns <- SPL %>%
   tq_transmute(select     = close, 
                mutate_fun = periodReturn, 
                period     = "yearly", 
@@ -163,6 +180,26 @@ SPL_MACD %>%
 #  theme_tq() +
   theme_tq_green() + scale_color_tq(theme = "green") + scale_fill_tq(theme = "green")     #Theme:Green  
   scale_color_tq()
+  
+  #Example 3c: MACD to Visualize Moving Average Convergence Divergence
+  SPL_SMA <- SPL %>%
+  tq_mutate_xy(x = close, mutate_fun = SMA, n = 15) %>%
+    rename(SMA.15 = SMA) %>%
+    tq_mutate_xy(x = close, mutate_fun = SMA, n = 50) %>%
+    rename(SMA.50 = SMA)
+  
+  
+  my_palette <- c("black", "blue", "red")
+  SPL %>%
+    select(date, close, SMA.15, SMA.50) %>%
+    gather(key = type, value = price, close:SMA.50) %>%
+    ggplot(aes(x = date, y = price, col = type)) +
+    geom_line() +
+    scale_colour_manual(values = my_palette) + 
+    theme(legend.position="bottom") +
+    ggtitle("Simple Moving Averages are a Breeze with tidyquant") +
+    xlab("") + 
+    ylab("Stock Price")  
 
 SPL_RSI  <- SPL %>%
 
@@ -211,8 +248,12 @@ tq_mutate_fun_options() %>%
 #Moving Averages
 ema.20 <-   EMA(SPL[,"close"], 20)
 ema.20
+sma.15 <-   SMA(SPL[,"close"], 15)
+sma.15
 sma.20 <-   SMA(SPL[,"close"], 20)
 sma.20
+sma.50 <-   SMA(SPL[,"close"], 50)
+sma.50
 vwap.10  <-  VWAP(SPL[,c("close")],SPL[,"volume"],10)
 vwap.10
 zlema.20 <- ZLEMA(SPL[,"close"], 10)
@@ -252,18 +293,17 @@ SPL_chaikan_AD
 SPL_chaikan_AD %>%
   ggplot(aes(x = date, y = close)) +
   geom_line() +                         # Plot stock price
-#  geom_line(aes(y = chaikinAD(high:low:close,volume), col = "SPL")) +
+  geom_line(aes(y = chaikinAD(high:low:close,volume), col = "SPL")) +
   coord_x_date(xlim = c(today() - weeks(12), today()),
                ylim = c(0.1, 2.0))                     # Zoom in
 
 
-
-
-
-
-
-
-
+# show different runmean algorithms with data spanning many orders of magnitude
+# Moving Avg line
+n=30; k=5;
+x = SPL$close
+a = runmean(x, k, alg="fast" )
+a
 
 
 
