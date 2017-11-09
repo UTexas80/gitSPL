@@ -4,12 +4,14 @@ library(tidyquant)
 library(caTools)
 library(ggplot2) 
 library(plotly)
+library(TTR)
 
 # Setup dates for zoom window
 #end <- ymd("2017-10-30")
 end <-  today()
 from <- today() - years(10)
 start <- end - weeks(52)
+days <- length(SPL$date)
 
 # Get SPL Stock Prices
 SPL <- tq_get("SPL.AX")
@@ -138,6 +140,11 @@ SPL %>%
   
   tq_mutate(select = close, mutate_fun = periodReturn,
             period = "daily", type = "log")
+
+# Example 2: Use tq_mutate_xy to use functions with two columns required
+SPL %>%
+  tq_mutate_xy(x = close, y = volume, mutate_fun = EVWMA,
+               col_rename = "EVWMA")
 
 #Example 2B: Getting Daily Log Returns
 SPL_daily_log_returns <- SPL %>%
@@ -283,7 +290,7 @@ rsi14
 #SPL %>%
 SPL_chaikan_AD <- SPL %>%
   tq_transmute(
-               mutate_fun = chaikinAD(), 
+               mutate_fun = chaikinAD, 
                HLC = high:low:close,
                volume = volume
                )
@@ -297,17 +304,33 @@ SPL_chaikan_AD %>%
   coord_x_date(xlim = c(today() - weeks(12), today()),
                ylim = c(0.1, 2.0))                     # Zoom in
 
+SPL$adjusted
+SPL$close
 
-# show different runmean algorithms with data spanning many orders of magnitude
-# Moving Avg line
-n=30; k=5;
-x = SPL$close
-a = runmean(x, k, alg="fast" )
-a
-
-
-
-
+splClose <- SPL$close[!is.na(SPL$close)]
+splHigh <- SPL$high[!is.na(SPL$high)]
+splLow <- SPL$low[!is.na(SPL$low)]
+mean(splClose)
+mean(splHigh)
+mean(splLow)
 
 
 
+bb20 = BBands(SPL[c('close')],sd=2.0)
+head(bb20, n=2000)
+
+
+SPL
+?BBands
+
+BBands(splClose,20,sd=2)
+BBands(splHigh,splLow,splClose,20,sd=2)
+BBands( [splHigh,splLow,splClose)] )
+bbands.HLC <- BBands( SPL[,c("high","low","close")] )
+bbands.HLC <- BBands( SPL[,c(SPL$high[!is.na(SPL$high)],SPL$low[!is.na(SPL$low)],SPL$close[!is.na(SPL$close)])])
+head(bbands.HLC)
+bbands
+
+bbands.HLC <- BBands( SPL[,c("high","low","close")] )
+
+BBands" <-  function(HLC, n=20, maType, sd=2, ...) 
