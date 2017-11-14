@@ -10,5 +10,8 @@ cVol <- chaikinVolatility(SPL[,c("high","low")],20,maType=EMA)  # Chaikan Volati
 tblChaikinMF <- data.frame(date,"SPL",cmf)                      # Create Chaikan Money Flow A/D Table
 tblChaikinVol <- data.frame(date,"SPL",cVol)                    # Create Chaikan Volatility Table
 #
+colnames(tblChaikinMF) <- c("date", "symbol", "cmf")            # Rename ChaikinMF Table Columns
+colnames(tblChaikinVol) <- c("date", "symbol", "cVol")          # Rename ChaikinVol Table Columns
+#
 tblChaikinMF<-tblChaikinMF[complete.cases(tblChaikinMF),]       # Delete tblChaikinMF NA
 tblChaikinVol<-tblChaikinVol[complete.cases(tblChaikinVol),]    # Delete tblChaikinVol NA

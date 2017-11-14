@@ -6,5 +6,6 @@ date <- SPL$date                                              # Create date vari
 #
 obv <- OBV(SPL$close, SPL$volume )                            # On Balance Volume
 tblOBV <- data.frame(date,"SPL",obv)                          # Create OBV Table
+colnames(tblOBV) <- c("date", "symbol", "obv")                # Rename OBV Table Columns
 #
-tblOBV<-tblOBV[complete.cases(tblOBV),]                       # Delete OVB NA
+tblOBV<-tblOBV[complete.cases(tblOBV),]                       # Delete OBV NA
