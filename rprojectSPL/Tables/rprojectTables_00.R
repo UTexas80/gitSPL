@@ -1,9 +1,10 @@
 library(tidyquant)                                                              # Loads tidyquant, tidyverse, lubridate, quantmod, TTR, and xts
 library(TTR)                                                                    # Technical Trading Rules package
+# SPL Processing ---------------------------------------------------------------
 SPL <- tq_get("SPL.AX")                                                         # Get SPL Stock Prices
 SPL<-SPL[complete.cases(SPL),]                                                  # Delete NA
 date <- SPL$date                                                                # Create date variable
-# TTR Processing ---------------------------------------------------------------                                                             
+# TTR Processing --------------------------------------------------------------- 
 adx <- ADX(SPL[,c("high","low","close")])                                       # Welles Wilder’s Directional Movement Index
 aroon <- aroon(SPL[,c("high","low")],n=20)                                      # Aroon Indicator
 atr <- ATR(SPL[,c("high","low","close")],n=14)                                  # Average True Range Indicator
@@ -98,7 +99,7 @@ colnames(tblMOM) <- c("date", "symbol", "mom")                                  
 colnames(tblOBV) <- c("date", "symbol", "obv")                                  # Rename OBV Table Columns
 colnames(tblPBands) <- c("date", "symbol", "dn", "center", "up" )               # Rename tblPBands Table Columns
 colnames(tblPrice) <- c("date_1", "open", "high", "low", "close", "volume", 
-  "adjusted", "symbol", "date" )                                                        # Rename tblPBands Table Columns
+  "adjusted", "symbol", "date" )                                                # Rename tblPBands Table Columns
 colnames(tblROC) <- c("date", "symbol", "roc" )                                 # Rename tblROC Table Columns
 colnames(tblRSI) <- c("date", "symbol", "rsi" )                                 # Rename tblRSI Table Columns
 colnames(tblRPR) <- c("date", "symbol", "rpr" )                                 # Rename tblRPR Table Columns
