@@ -39,7 +39,7 @@ vhf.close <- VHF(SPL$close)                                                     
 vhf.hilow <- VHF(SPL[,c("high","low","close")])                                 # Vertical Horizontal Filter Hi / Low
 # Volatility Tables
 ohlc <- SPL[,c("open", "high","low","close")]                                   # Volatility OHLC parameter
-tblVolatility_Close <- volatility(ohlc, calc="close")                           # Volatility
+tblVolatilityClose <- volatility(ohlc, calc="close")                           # Volatility
 # Williams Indicators
 wad <- williamsAD(SPL[,c("high","low","close")])                                # William's Williams Accumulation / Distribution 
 wpr <- WPR(SPL[,c("high","low","close")], 14)                                   # William's %R Indicator
@@ -62,7 +62,7 @@ tblATR14 <- data.frame(date,"spl",atr)                                          
 tblBBands20 <- data.frame(date,"SPL", bb.20, disp, dispDiff)                    # Create BBands Table
 tblCCI <- data.frame(date,"spl",cci)                                            # Create Commodity Channel Index Table
 tblChaikinMF <- data.frame(date,"SPL",cmf)                                      # Create Chaikan Money Flow A/D Table
-tblChaikinVol <- data.frame(date,"SPL",cVol)                                    # Create Chaikan Volatility Table
+
 tblCMO <- data.frame(date,"spl",cmo)                                            # Create Chande Momentum Oscillator Table
 tblCLV <- data.frame(date,"spl",clv)                                            # Create Close Location Value Table
 tblDC <- data.frame(date,"spl",dc)                                              # Create Donchian Channel Table
@@ -84,7 +84,8 @@ tblTrend_VHF <- data.frame(date,"spl",vhf.close)                                
 tblTrend_VHF_HiLo <- data.frame(date,"spl",vhf.hilow)                           # Create Vertical Horizontal Filter (High / Low) Table
 tblUltOsc <-data.frame(date,"spl",ult.osc)                                      # Create Ultimate Oscillator Table
 # Volatility Tables
-tblVolatility_Close <- data.frame(date, "spl", tblVolatility_Close)             # # CreateVolatility (Close) Table
+tblVolatilityChaikin <- data.frame(date,"SPL",cVol)                             # Create Chaikan Volatility Table
+tblVolatilityClose <- data.frame(date, "spl", tblVolatilityClose)               # CreateVolatility (Close) Table
 
 tblWilderSum <- data.frame(date,"spl",runWilderSum)                             # Create Welles Wilder style weighted sum Table
 tblWAD <- data.frame(date,"spl",wad)                                            # Create Williams Accumulation / Distribution Table
@@ -108,7 +109,7 @@ tblATR14<-tblATR14[complete.cases(tblATR14),]                                   
 tblBBands20<-tblBBands20[complete.cases(tblBBands20),]                          # Delete BBands20 NA
 tblCCI<-tblCCI[complete.cases(tblCCI),]                                         # Delete tblCCI NA
 tblChaikinMF<-tblChaikinMF[complete.cases(tblChaikinMF),]                       # Delete tblChaikinMF NA
-tblChaikinVol<-tblChaikinVol[complete.cases(tblChaikinVol),]                    # Delete tblChaikinVol NA
+
 tblCMO<-tblCMO[complete.cases(tblCMO),]                                         # Delete tblCMO NA
 tblCLV<-tblCLV[complete.cases(tblCLV),]                                         # Delete tblCLV NA
 tblDC<-tblDC[complete.cases(tblDC),]                                            # Delete tblDC NA
@@ -131,7 +132,8 @@ tblTrend_TDI<-tblTrend_TDI[complete.cases(tblTrend_TDI),]                       
 tblTrend_VHF<-tblTrend_VHF[complete.cases(tblTrend_VHF),]                       # Delete Vertical Horizontal Filter (Close) NA
 tblTrend_VHF_HiLo<-tblTrend_VHF_HiLo[complete.cases(tblTrend_VHF_HiLo),]        # Delete Vertical Horizontal Filter (High / Low) NA
 # Volatility Tables
-tblVolatility_Close <-tblVolatility_Close[complete.cases(tblVolatility_Close),] # Delete Volatility NA's
+tblVolatilityChaikin<-tblVolatilityChaikin[complete.cases(tblVolatilityChaikin),]                    # Delete tblChaikinVol NA
+tblVolatilityClose <-tblVolatilityClose[complete.cases(tblVolatilityClose),]    # Delete Volatility NA's
 
 tblUltOsc<-tblUltOsc[complete.cases(tblUltOsc),]                                # Delete Ultimate Oscillator NA
 tblWilderSum<-tblWilderSum[complete.cases(tblWilderSum),]                       # Delete tblWilderSum NA
@@ -157,7 +159,7 @@ colnames(tblBBands20) <- c("date", "symbol", "dn", "mavg", "up", "pctB",
   "bbDisp", "bbDispDiff")                                                       # Rename BBands Table Columns
 colnames(tblCCI) <- c("date", "symbol", "cci" )                                 # Rename tblCCI Table Columns
 colnames(tblChaikinMF) <- c("date", "symbol", "cmf")                            # Rename ChaikinMF Table Columns
-colnames(tblChaikinVol) <- c("date", "symbol", "cVol")                          # Rename ChaikinVol Table Columns
+
 colnames(tblCMO) <- c("date", "symbol", "cmo" )                                 # Rename tblCMO Table Columns
 colnames(tblCLV) <- c("date", "symbol", "clv" )                                 # Rename tblCLV Table Columns
 colnames(tblDC) <- c("date", "symbol", "high", "mid", "low" )                   # Rename tblDC Table Columns
@@ -182,7 +184,8 @@ colnames(tblTrend_TDI) <- c("date", "symbol", "tdi", "di" )                     
 colnames(tblTrend_VHF) <- c("date", "symbol", "vhfClose")                       # Rename tblTrend_TCI Table Columns
 colnames(tblTrend_VHF_HiLo) <- c("date", "symbol", "vhfHiLo")                   # Rename tblTrend_TCI Table Columns
 # Volatility Tables
-colnames(tblVolatility_Close) <- c("date", "symbol", "vClose")                  # Rename tblVolatility_Close Table Columns
+colnames(tblVolatilityChaikin) <- c("date", "symbol", "volatilityChaikin")      # Rename ChaikinVol Table Columns
+colnames(tblVolatilityClose) <- c("date", "symbol", "volatilityClose")          # Rename tblVolatility_Close Table Columns
 
 colnames(tblUltOsc) <- c("date", "symbol", "ultOsc")                            # Rename tblTrend_TCI Table Columns  
 colnames(tblWilderSum) <- c("date", "symbol", "runWilderSum")                   # Rename tblWilderSum Table Columns
@@ -214,7 +217,7 @@ tblPrice <- tblPrice[, c(1, 10, 2, 9, 8, 3, 4, 5, 6, 7)]                        
 # tblBBands20
 # tblCCI
 # tblChaikinMF
-# tblChaikinVol
+# tblVolatilityChaikin
 # tblCMO
 # tblCLV
 # tblDC
