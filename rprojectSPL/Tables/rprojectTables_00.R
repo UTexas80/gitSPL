@@ -96,14 +96,14 @@ tblTrendWilderSum <- data.frame(date,"spl",runWilderSum)                        
 tblTrendZigZag <- data.frame(date,"spl",zz)                                     # Create Zig Zag Indicator Table
 # Volatility Tables
 tblVolatilityATR14 <- data.frame(date,"spl",atr)                                # Create Average True Range Indicator Table
-tblVolatilityBBands20 <- data.frame(date,"SPL", bb.20, disp, dispDiff)          # Create BBands Table
-tblVolatilityChaikin <- data.frame(date,"SPL",cVol)                             # Create Chaikan Volatility Table
+tblVolatilityBBands20 <- data.frame(date,"spl", bb.20, disp, dispDiff)          # Create BBands Table
+tblVolatilityChaikin <- data.frame(date,"spl",cVol)                             # Create Chaikan Volatility Table
 tblVolatilityClose <- data.frame(date, "spl", tblVolatilityClose)               # Create Volatility (Close) Table
 tblVolatilityPBands <- data.frame(date,"spl",pbands)                            # Create PBands Table
 # Volume Tables
-tblVolumeChaikinAD <- data.frame(date,"SPL",ad)                                 # Create # Chaikin Accumulation / Distribution Table
-tblVolumeChaikinMF <- data.frame(date,"SPL",cmf)                                # Create Chaikan Money Flow A/D Table
-tblVolumeOBV <- data.frame(date,"SPL",obv)                                      # Create OBV Table
+tblVolumeChaikinAD <- data.frame(date,"spl",ad)                                 # Create # Chaikin Accumulation / Distribution Table
+tblVolumeChaikinMF <- data.frame(date,"spl",cmf)                                # Create Chaikan Money Flow A/D Table
+tblVolumeOBV <- data.frame(date,"spl",obv)                                      # Create OBV Table
 # Moving Average Tables
 tblMA_ALMA20 <- data.frame("spl", alma.20)                                      # Create Arnaud Legoux moving average table
 tblMA_DEMA20 <- data.frame(date,"spl", dema.20)                                 # Create Double Exponential Moving Average table
@@ -115,7 +115,7 @@ tblMA_SMA20 <- data.frame(date,"spl", sma.20)                                   
 tblMA_TRIX <- data.frame(date,"spl",trix)                                       # Create Triple Smoothed Exponential Oscillator Moving Average Table
 tblMA_VWAS20 <- data.frame(date,"spl", vwas.20)                                 # Create Volume-weighted moving average table
 tblMA_WMA20 <- data.frame(date,"spl", wma.20)                                   # Create # Weighted Moving Average table
-tblMA_ZLEMA20 <- data.frame(date,"SPL", zlema.20)                               # Create ZLEMA Table
+tblMA_ZLEMA20 <- data.frame(date,"spl", zlema.20)                               # Create ZLEMA Table
 # Delete Table NA --------------------------------------------------------------
 # tblEMV<-tblEMV[complete.cases(tblEMV),]                                       # Delete tblEMV NA
 # Momentum Tables
