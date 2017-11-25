@@ -4,6 +4,7 @@ library(TTR)                                                                    
 SPL <- tq_get("SPL.AX")                                                         # Get SPL Stock Prices
 SPL<-SPL[complete.cases(SPL),]                                                  # Delete NA
 date <- SPL$date                                                                # Create date variable
+key<-paste(as.character(format(date, "%Y")), as.character(format(date, "%m")), as.character(format(date, "%d")), "spl", sep = "")
 # TTR Processing --------------------------------------------------------------- 
 ad <- chaikinAD(SPL[,c("high","low","close")], SPL[,"volume"])                  # Chaikin Accumulation / Distribution Index
 adx <- ADX(SPL[,c("high","low","close")])                                       # Welles Wilder’s Directional Movement Index
@@ -61,61 +62,61 @@ wma.20 <- WMA(SPL$close, 20)                                                    
 zz <- ZigZag( SPL[,c("high", "low")], change=20 )                               # Zig Zag higlights trends by removing price changes smaller than change and interpolating lines between the extreme points.
 zlema.20 <- ZLEMA(SPL$close, 20)                                                # ZLEMA - 20 Day; ZLEMA is similar to an EMA, as it gives more weight to recent observations, but attempts to remove lag by subtracting data prior to (n-1)/2 periods (default) to minimize the cumulative effect.
 # Create Table -----------------------------------------------------------------
-# tblEMV <- data.frame(date,"spl",emv)                                          # Create Arms’ Ease of Movement Table
+# tblEMV <- data.frame(key,date,"spl",emv)                                          # Create Arms’ Ease of Movement Table
 # Momentum Tables
-tblMOM <- data.frame(date,"spl",mom)                                            # Create Momentum Table
-tblMOM_CCI <- data.frame(date,"spl",cci)                                        # Create Commodity Channel Index Table
-tblMOM_CMO <- data.frame(date,"spl",cmo)                                        # Create Chande Momentum Oscillator Table
-tblMOM_DPOprice <- data.frame(date,"spl",momDPOprice)                           # Create DeTrended Price Oscillator Table
-tblMOM_DPOvolume <- data.frame(date,"spl",momDPOvolume)                         # Create DeTrended Volume Oscillator Table
-tblMOM_ROC <- data.frame(date,"spl",roc)                                        # Create Rate of Change Table
-tblMOM_RSI <- data.frame(date,"spl",rsi)                                        # Create Relative Strength Indicator Table
-tblMOM_Stoch <- data.frame(date,"spl",stoch)                                    # Create Stochastic Oscillator / Stochastic Momentum Index Table
+tblMOM <- data.frame(key,date,"spl",mom)                                            # Create Momentum Table
+tblMOM_CCI <- data.frame(key,date,"spl",cci)                                        # Create Commodity Channel Index Table
+tblMOM_CMO <- data.frame(key,date,"spl",cmo)                                        # Create Chande Momentum Oscillator Table
+tblMOM_DPOprice <- data.frame(key,date,"spl",momDPOprice)                           # Create DeTrended Price Oscillator Table
+tblMOM_DPOvolume <- data.frame(key,date,"spl",momDPOvolume)                         # Create DeTrended Volume Oscillator Table
+tblMOM_ROC <- data.frame(key,date,"spl",roc)                                        # Create Rate of Change Table
+tblMOM_RSI <- data.frame(key,date,"spl",rsi)                                        # Create Relative Strength Indicator Table
+tblMOM_Stoch <- data.frame(key,date,"spl",stoch)                                    # Create Stochastic Oscillator / Stochastic Momentum Index Table
 tblMOM_UltOsc <-data.frame(date,"spl",ult.osc)                                  # Create Ultimate Oscillator Table
-tblMOM_WAD <- data.frame(date,"spl",wad)                                        # Create Williams Accumulation / Distribution Table
-tblMOM_WPR <- data.frame(date,"spl",wpr)                                        # Create William's %R Indicator Table
+tblMOM_WAD <- data.frame(key,date,"spl",wad)                                        # Create Williams Accumulation / Distribution Table
+tblMOM_WPR <- data.frame(key,date,"spl",wpr)                                        # Create William's %R Indicator Table
 # Money Tables
-tblMoneyMFI <- data.frame(date,"spl",mfi)                                       # Create Money Flow Index Table
+tblMoneyMFI <- data.frame(key,date,"spl",mfi)                                       # Create Money Flow Index Table
 # Price Tables
-tblPrice <- data.frame(SPL,"spl", date + 1)                                     # Create Stock Price Table
+tblPrice <- data.frame(key,SPL,"spl", date + 1)                                     # Create Stock Price Table
 #Statistical Tables
-tblStatRPR <- data.frame(date,"spl",rpr)                                        # Create Run Percent Rank Table
-tblStatRunSD <- data.frame(date,"spl",SPL$close, runsd)                         # Create Running Standard Deviation Table
+tblStatRPR <- data.frame(key,date,"spl",rpr)                                        # Create Run Percent Rank Table
+tblStatRunSD <- data.frame(key,date,"spl",SPL$close, runsd)                         # Create Running Standard Deviation Table
 # Trend Tables
-tblTrendADX <- data.frame(date,"spl",adx)                                       # Create Welles Wilder's ADX Table
-tblTrendAROON <- data.frame(date,"spl",aroon)                                   # Create Aroon Indicator Table
-tblTrendCLV <- data.frame(date,"spl",clv)                                       # Create Close Location Value Table
-tblTrendDC <- data.frame(date,"spl",dc)                                         # Create Donchian Channel Table
-tblTrendDVI <- data.frame(date,"spl",dvi)                                       # Create DV Intermediate oscillator (DVI Table
-tblTrendGMMA <- data.frame(date,"spl",gmma)                                     # Create Guppy Multiple Moving Averages Table
-tblTrendMACD <- data.frame(date,"spl",macd)                                     # Create Moving Average Convergence/Divergence (MACD) Table
-tblTrendTDI <- data.frame(date,"spl",tdi)                                       # Create Trend Detection Index Table
-tblTrendVHF <- data.frame(date,"spl",vhf.close)                                 # Create Vertical Horizontal Filter (Close) Table
-tblTrendVHF_HiLo <- data.frame(date,"spl",vhf.hilow)                            # Create Vertical Horizontal Filter (High / Low) Table
-tblTrendWilderSum <- data.frame(date,"spl",runWilderSum)                        # Create Welles Wilder style weighted sum Table
-tblTrendZigZag <- data.frame(date,"spl",zz)                                     # Create Zig Zag Indicator Table
+tblTrendADX <- data.frame(key,date,"spl",adx)                                       # Create Welles Wilder's ADX Table
+tblTrendAROON <- data.frame(key,date,"spl",aroon)                                   # Create Aroon Indicator Table
+tblTrendCLV <- data.frame(key,date,"spl",clv)                                       # Create Close Location Value Table
+tblTrendDC <- data.frame(key,date,"spl",dc)                                         # Create Donchian Channel Table
+tblTrendDVI <- data.frame(key,date,"spl",dvi)                                       # Create DV Intermediate oscillator (DVI Table
+tblTrendGMMA <- data.frame(key,date,"spl",gmma)                                     # Create Guppy Multiple Moving Averages Table
+tblTrendMACD <- data.frame(key,date,"spl",macd)                                     # Create Moving Average Convergence/Divergence (MACD) Table
+tblTrendTDI <- data.frame(key,date,"spl",tdi)                                       # Create Trend Detection Index Table
+tblTrendVHF <- data.frame(key,date,"spl",vhf.close)                                 # Create Vertical Horizontal Filter (Close) Table
+tblTrendVHF_HiLo <- data.frame(key,date,"spl",vhf.hilow)                            # Create Vertical Horizontal Filter (High / Low) Table
+tblTrendWilderSum <- data.frame(key,date,"spl",runWilderSum)                        # Create Welles Wilder style weighted sum Table
+tblTrendZigZag <- data.frame(key,date,"spl",zz)                                     # Create Zig Zag Indicator Table
 # Volatility Tables
-tblVolatilityATR14 <- data.frame(date,"spl",atr)                                # Create Average True Range Indicator Table
-tblVolatilityBBands20 <- data.frame(date,"spl", bb.20, disp, dispDiff)          # Create BBands Table
-tblVolatilityChaikin <- data.frame(date,"spl",cVol)                             # Create Chaikan Volatility Table
-tblVolatilityClose <- data.frame(date, "spl", tblVolatilityClose)               # Create Volatility (Close) Table
-tblVolatilityPBands <- data.frame(date,"spl",pbands)                            # Create PBands Table
+tblVolatilityATR14 <- data.frame(key,date,"spl",atr)                                # Create Average True Range Indicator Table
+tblVolatilityBBands20 <- data.frame(key,date,"spl", bb.20, disp, dispDiff)          # Create BBands Table
+tblVolatilityChaikin <- data.frame(key,date,"spl",cVol)                             # Create Chaikan Volatility Table
+tblVolatilityClose <- data.frame(key,date, "spl", tblVolatilityClose)               # Create Volatility (Close) Table
+tblVolatilityPBands <- data.frame(key,date,"spl",pbands)                            # Create PBands Table
 # Volume Tables
-tblVolumeChaikinAD <- data.frame(date,"spl",ad)                                 # Create # Chaikin Accumulation / Distribution Table
-tblVolumeChaikinMF <- data.frame(date,"spl",cmf)                                # Create Chaikan Money Flow A/D Table
-tblVolumeOBV <- data.frame(date,"spl",obv)                                      # Create OBV Table
+tblVolumeChaikinAD <- data.frame(key,date,"spl",ad)                                 # Create # Chaikin Accumulation / Distribution Table
+tblVolumeChaikinMF <- data.frame(key,date,"spl",cmf)                                # Create Chaikan Money Flow A/D Table
+tblVolumeOBV <- data.frame(key,date,"spl",obv)                                      # Create OBV Table
 # Moving Average Tables
-tblMA_ALMA20 <- data.frame("spl", alma.20)                                      # Create Arnaud Legoux moving average table
-tblMA_DEMA20 <- data.frame(date,"spl", dema.20)                                 # Create Double Exponential Moving Average table
-tblMA_EMA20 <- data.frame(date,"spl", ema.20)                                   # Create Exponential Moving Average table
-tblMA_EVWMA20 <- data.frame(date,"spl", evwma.20)                               # Create # Elastic Volume-weighted Moving Average table
-tblMA_HMA20 <- data.frame(date,"spl", hma.20)                                   # Create Hull moving average table
-tblMA_SMA20 <- data.frame(date,"spl", sma.20)                                   # Create Simple Moving Average table
+tblMA_ALMA20 <- data.frame(key,"spl", alma.20)                                      # Create Arnaud Legoux moving average table
+tblMA_DEMA20 <- data.frame(key,date,"spl", dema.20)                                 # Create Double Exponential Moving Average table
+tblMA_EMA20 <- data.frame(key,date,"spl", ema.20)                                   # Create Exponential Moving Average table
+tblMA_EVWMA20 <- data.frame(key,date,"spl", evwma.20)                               # Create # Elastic Volume-weighted Moving Average table
+tblMA_HMA20 <- data.frame(key,date,"spl", hma.20)                                   # Create Hull moving average table
+tblMA_SMA20 <- data.frame(key,date,"spl", sma.20)                                   # Create Simple Moving Average table
 #vma <- 
-tblMA_TRIX <- data.frame(date,"spl",trix)                                       # Create Triple Smoothed Exponential Oscillator Moving Average Table
-tblMA_VWAS20 <- data.frame(date,"spl", vwas.20)                                 # Create Volume-weighted moving average table
-tblMA_WMA20 <- data.frame(date,"spl", wma.20)                                   # Create # Weighted Moving Average table
-tblMA_ZLEMA20 <- data.frame(date,"spl", zlema.20)                               # Create ZLEMA Table
+tblMA_TRIX <- data.frame(key,date,"spl",trix)                                       # Create Triple Smoothed Exponential Oscillator Moving Average Table
+tblMA_VWAS20 <- data.frame(key,date,"spl", vwas.20)                                 # Create Volume-weighted moving average table
+tblMA_WMA20 <- data.frame(key,date,"spl", wma.20)                                   # Create # Weighted Moving Average table
+tblMA_ZLEMA20 <- data.frame(key,date,"spl", zlema.20)                               # Create ZLEMA Table
 # Delete Table NA --------------------------------------------------------------
 # tblEMV<-tblEMV[complete.cases(tblEMV),]                                       # Delete tblEMV NA
 # Momentum Tables
