@@ -1,9 +1,10 @@
+library(quantmod)                                                               # Load quantmod
 library(tidyquant)                                                              # Loads tidyquant, tidyverse, lubridate, quantmod, TTR, and xts
 library(TTR)                                                                    # Technical Trading Rules package
 # SPL Processing -----------------------------------------------------------------------------------
 SPL <- tq_get("SPL.AX")                                                         # Get SPL Stock Prices
 SPL<-SPL[complete.cases(SPL),]                                                  # Delete NA
-date_1 <- SPL$date                                                                # Create date variable
+date_1 <- SPL$date                                                              # Create date variable
 date <- date_1 + 1
 key<-paste(as.character(format(date, "%Y")), as.character(format(date, "%m")), as.character(format(date, "%d")), "spl", sep = "")
 # TTR Processing ----------------------------------------------------------------------------------- 
@@ -246,8 +247,17 @@ colnames(tblMA_ZLEMA20) <- c("key","date", "symbol", "zlema20")                 
 # Indexing  ----------------------------------------------------------------------------------------
 tblPrice <- tibble::rowid_to_column(tblPrice, "Index")                          # Add Index to tblPrice
 # Reorder  -----------------------------------------------------------------------------------------
+tblPrice <- tblPrice[, c(2, 1, 11, 3, 10, 4, 5, 6, 7, 9, 8)]                    # Delta Simulation
+# Price --------------------------------------------------------------------------------------------
 tblPrice <- tblPrice[, c(2, 1, 11, 3, 10, 4, 5, 6, 7, 9, 8)]                    # Reorder tblPrice columns
+# Simulation  -----------------------------------------------------------------------------------------
+deltPrice <- Delt(tblPrice$close, k=1:200)                                      # Quantmod Price k-period % difference
+deltVolume <- Delt(tblPrice$volume, k=1:200)                                    # Quantmod Volume k-period % difference
+tblDeltPrice<- data.frame(key,date,"spl", deltPrice)                            # Create table Price k-period % difference
+tblDeltVolume<- data.frame(key,date,"spl", deltVolume)                          # Create table Volume k-period % difference
 # Output -------------------------------------------------------------------------------------------
+# tblDeltPrice
+# tblDeltVolume
 # tblEMV
 # tblMOM
 # tblMOM_CCI
