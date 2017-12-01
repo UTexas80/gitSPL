@@ -248,11 +248,15 @@ colnames(tblMA_ZLEMA20) <- c("key","date", "symbol", "zlema20")                 
 tblPrice <- tibble::rowid_to_column(tblPrice, "Index")                          # Add Index to tblPrice
 # Reorder  -----------------------------------------------------------------------------------------
 tblPrice <- tblPrice[, c(2, 1, 11, 3, 10, 4, 5, 6, 7, 9, 8)]                    # Reorder tblPrice columns
-# Simulation  -----------------------------------------------------------------------------------------
+# Simulation  --------------------------------------------------------------------------------------
 deltPrice <- Delt(tblPrice$close, k=1:200)                                      # Quantmod Price k-period % difference
 deltVolume <- Delt(tblPrice$volume, k=1:200)                                    # Quantmod Volume k-period % difference
 tblDeltPrice<- data.frame(key,date,"spl", deltPrice)                            # Create table Price k-period % difference
 tblDeltVolume<- data.frame(key,date,"spl", deltVolume)                          # Create table Volume k-period % difference
+# --------------------------------------------------------------------------------------------------
+dimnames(deltVolume) <- list(tblPrice$Index, 1:200)
+x <- apply(deltVolume,2,function(xx)tail(sort(xx),2))
+y <- apply(deltVolume,2,function(xx)tail(nrow(sort(xx)),2))
 # Output -------------------------------------------------------------------------------------------
 # tblDeltPrice
 # tblDeltVolume
