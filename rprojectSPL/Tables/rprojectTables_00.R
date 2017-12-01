@@ -247,8 +247,6 @@ colnames(tblMA_ZLEMA20) <- c("key","date", "symbol", "zlema20")                 
 # Indexing  ----------------------------------------------------------------------------------------
 tblPrice <- tibble::rowid_to_column(tblPrice, "Index")                          # Add Index to tblPrice
 # Reorder  -----------------------------------------------------------------------------------------
-tblPrice <- tblPrice[, c(2, 1, 11, 3, 10, 4, 5, 6, 7, 9, 8)]                    # Delta Simulation
-# Price --------------------------------------------------------------------------------------------
 tblPrice <- tblPrice[, c(2, 1, 11, 3, 10, 4, 5, 6, 7, 9, 8)]                    # Reorder tblPrice columns
 # Simulation  -----------------------------------------------------------------------------------------
 deltPrice <- Delt(tblPrice$close, k=1:200)                                      # Quantmod Price k-period % difference
