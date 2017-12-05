@@ -259,6 +259,12 @@ m[is.infinite(m) | is.na(m)] <- 0
 rownames(m) <- rownames(m, do.NULL = FALSE, prefix = "")
 mm <- apply(m,2,function(xx)tail(sort(xx),2))
 mmm <- apply(m,2,function(xx)tail(names(sort(xx)),2))
+
+# find the 5 largest values--------------------------------------------------------------------------
+x <- which(m>=sort(m, decreasing = T)[5], arr.ind = T)
+# determine the order of the 5 largest values in decreasing order
+x.order <- order(m[x], decreasing = T)
+x[x.order, ]
 # --------------------------------------------------------------------------------------------------
 dimnames(deltVolume) <- list(tblPrice$Index, 1:200)
 x <- apply(deltVolume,2,function(xx)tail(sort(xx),2))
