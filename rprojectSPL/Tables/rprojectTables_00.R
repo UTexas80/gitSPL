@@ -253,11 +253,12 @@ deltPrice <- Delt(tblPrice$close, k=1:200)                                      
 deltVolume <- Delt(tblPrice$volume, k=1:200)                                    # Quantmod Volume k-period % difference
 tblDeltPrice<- data.frame(key,date,"spl", deltPrice)                            # Create table Price k-period % difference
 tblDeltVolume<- data.frame(key,date,"spl", deltVolume)                          # Create table Volume k-period % difference
+# Create Matrix  -----------------------------------------------------------------------------------
+m <- data.matrix(Delt(tblPrice$close, k=1:200))                                 # Create Price Matrix
+m[is.infinite(m) | is.na(m)] <- 0                                               # Check for inf or na's and convert to 0
+rownames(m) <- rownames(m, do.NULL = FALSE, prefix = "")                        # Add Row Name - Index Value 
+colnames(m) <- c(1:200)                                                         # Add Column Name Value 1 - 200
 # Top 2 Values  ------------------------------------------------------------------------------------
-m <- data.matrix(Delt(tblPrice$close, k=1:200))
-m[is.infinite(m) | is.na(m)] <- 0
-rownames(m) <- rownames(m, do.NULL = FALSE, prefix = "")
-colnames(m) <- c(1:200)
 mm <- apply(m,2,function(xx)tail(sort(xx),2))
 mmm <- apply(m,2,function(xx)tail(names(sort(xx)),2))
 # find the 5 largest values--------------------------------------------------------------------------
