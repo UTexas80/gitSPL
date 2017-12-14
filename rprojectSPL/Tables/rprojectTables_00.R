@@ -1,4 +1,5 @@
 library(quantmod)                                                               # Load quantmod
+library(tibble)                                                                 # Load tibble
 library(tidyquant)                                                              # Loads tidyquant, tidyverse, lubridate, quantmod, TTR, and xts
 library(TTR)                                                                    # Technical Trading Rules package
 # SPL Processing -----------------------------------------------------------------------------------
@@ -227,7 +228,7 @@ colnames(tblVolatilityChaikin) <- c("key","date", "symbol", "volatilityChaikin")
 colnames(tblVolatilityClose) <- c("key","date", "symbol", "volatilityClose")    # Rename tblVolatility_Close Table Columns
 colnames(tblVolatilityPBands) <- c("key","date", "symbol", "dn", "center", "up") 
                                                                                 # Rename tblVolatilityPBands Table Columns                                                                                
-# Volume Tables
+# Volume Tables ------------------------------------------------------------------------------------
 colnames(tblVolumeChaikinAD) <- c("key","date", "symbol", "ad")                 # Rename ChaikinAD Table Columns
 colnames(tblVolumeChaikinMF) <- c("key","date", "symbol", "cmf")                # Rename ChaikinMF Table Columns
 colnames(tblVolumeOBV) <- c("key","date", "symbol", "obv")                      # Rename OBV Table Columns
@@ -321,6 +322,10 @@ y <- apply(deltVolume,2,function(xx)tail(nrow(sort(xx)),2))
 # tblMA_WMA20
 # tblMA_ZLEMA20
 
+# Clear the R Environment and clear memory
+ls()                      # View R Environment
+remove(list = ls())       # To clear your environment
+gc()                      # clear any occupied memory by running garbage collector using gc()
 
 # https://stackoverflow.com/questions/18635064/error-of-ema-function-under-ttr/18635449#18635449
 # The EMV function will throw this error when either:
