@@ -325,7 +325,7 @@ SPL
 
 BBands(splClose,20,sd=2)
 BBands(splHigh,splLow,splClose,20,sd=2)
-BBands( [splHigh,splLow,splClose)] )
+
 bbands.HLC <- BBands( SPL[,c("high","low","close")] )
 bbands.HLC <- BBands( SPL[,c(SPL$high[!is.na(SPL$high)],SPL$low[!is.na(SPL$low)],SPL$close[!is.na(SPL$close)])])
 head(bbands.HLC)

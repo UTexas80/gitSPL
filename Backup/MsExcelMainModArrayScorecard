@@ -22,3 +22,23 @@ arrayScoreCard = Array("G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R
 
 SPL.AX [n-name][d1-Last trade Date][t1-Last trade time][l1-Last trade Price][o-open][h-high][g-low][c1-change][p2-change in percent][w-52-week Range][j1 market cap][r-P/E Ratio][y-Dividend yield][r5-PEG ration][m3-50-day MA][m8-% chg from 50 day MA][m4-200-day MA][m6% chg from 200 day MA]
 http://download.finance.yahoo.com/d/quotes.csv?s=SPL.AX&f=nd1t1l1ohgc1p2wj1ryr5m3m8m4m6
+
+
+
+To compute the Williams %R oscillator using Excel, you proceed as follow:
+
+1. Insert the high prices data for your stock in column “A” in Excel Spreadsheet.
+
+2. Insert the low prices data for your stock in column “B” in Excel Spreadsheet.
+
+3. Insert the closing prices data for your stock in column “C” in Excel Spreadsheet.
+
+4. Sort out the Lowest Low price for the last 8 days “=Min(B1:B8)” into column “D”
+
+5. Sort out the Highest High price for the last 8 days “=Max(A1:A8)” into column “E”
+
+6. Compute the CH in column “F” by inserting “=(C1-E1)” =100 + ((F9-MAX(D2:D9))/(E9-Min(E2:B9))X100
+
+7. Compute HL in Column “G” by inserting “=(E1-D1)”
+
+8. Compute Williams %R in column “H” by inserting “= 100+((CH/HL)x100)”
