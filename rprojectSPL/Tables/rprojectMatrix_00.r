@@ -20,7 +20,7 @@ tblPrice <- tibble::rowid_to_column(tblPrice, "Index")                          
 # Reorder  -----------------------------------------------------------------------------------------
 tblPrice <- tblPrice[, c(2, 1, 11, 3, 10, 4, 5, 6, 7, 9, 8)]                    # Reorder tblPrice columns
 # Create Simulation Matrix  -----------------------------------------------------------------------------------
-mtxDeltPrice <- data.matrix(Delt(tblPrice$adjusted, k=1:200))                    # Create Adjusted Price Matrix
+mtxDeltPrice <- data.matrix(Delt(tblPrice$adjusted, k=1:200))                   # Create Adjusted Price Matrix
 mtxDeltPrice[is.infinite(mtxDeltPrice) | is.na(mtxDeltPrice)] <- 0              # Check for inf or na's and convert to 0
 rownames(mtxDeltPrice) <- rownames(mtxDeltPrice, do.NULL = FALSE, prefix = "")  # Add Row Name - Index Value 
 colnames(mtxDeltPrice) <- c(1:200)                                              # Add Column Name Value 1 - 200
