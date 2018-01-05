@@ -1,0 +1,2 @@
+= Excel.Workbook(File.Contents("C:\Users\FalkFamily\gitSPL\SPL.xlsm"), null, true)= Excel.Workbook(File.Contents("C:\Users\FalkFamily\gitSPL\SPL.xlsm"), null, true)
+= Excel.Workbook(File.Contents("C:\Users\gfalk\OneDrive - University of Georgia\SPL\SPL.xlsm"), null, true)
