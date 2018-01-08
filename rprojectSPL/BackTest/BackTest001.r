@@ -3,12 +3,14 @@ require(PerformanceAnalytics)
 
 # Step 1: Get the data
 getSymbols("SPL.AX")
+SPL<-SPL[complete.cases(SPL),]                                                  # Delete NA
 
 # Step 2: Create your indicator
 dvi <- DVI(Cl(SPL))
+dfDVI <- data.frame(dvi) 
 
 # Step 3: Construct your trading rule
-sig <- Lag(ifelse(dvi$dvi < 0.5, 1, -1))
+sig <- Lag(ifelse(dfDVI$dvi < 0.5, 1, -1))
 
 # Step 4: The trading rules/equity curve
 ret <- ROC(Cl(SPL))*sig
