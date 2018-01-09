@@ -14,7 +14,7 @@ sig <- Lag(ifelse(dfDVI$dvi < 0.5, 1, -1))
 
 # Step 4: The trading rules/equity curve
 ret <- ROC(Cl(SPL))*sig
-ret <- ret[2009-06-02/2010-09-07]
+ret <- ret[2008-01-02/2018-01-09]
 eq <- exp(cumsum(ret))
 plot(eq)
 
