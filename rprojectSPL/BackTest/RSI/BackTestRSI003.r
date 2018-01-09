@@ -43,7 +43,7 @@ colnames(sums) <- c("Signal", "Number Trades")
                      all <- merge(all,medians)
 
                      wl <- cbind(abs(all[,"Mean Win"]/all[,"Mean Loss"]))
-                     abs(all[, "Median Win"]/all[,"Median Loss"]))
+                     abs(all[, "Median Win"]/all[,"Median Loss"])
                      colnames(wl) <- c("Mean Win/Loss ","Median Win/Loss")
   all <- cbind(all,wl)
 return(all)
