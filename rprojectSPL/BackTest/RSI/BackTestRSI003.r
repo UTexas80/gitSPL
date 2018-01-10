@@ -1,6 +1,7 @@
 # Attach packages. You can install packages via:
 # install.packages(c(“quantmod”,”TTR”,”PerformanceAnalytics”))
 library(quantmod)
+library(tibble)
 library(TTR)
 library(PerformanceAnalytics)
 
@@ -97,6 +98,7 @@ sigdn <- ifelse(sig < 0, sig, 0)
 
 # Calculate rule returns
 ret_up <- ret * sigup
+as_tibble(ret_up)
 colnames(ret_up) <- 'Long System Return'
 ret_dn <- ret * sigdn
 colnames(ret_dn) <- 'Short System Return'
