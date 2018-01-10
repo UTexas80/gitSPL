@@ -7,14 +7,16 @@ SPL<-SPL[complete.cases(SPL),]                                                  
 
 # Step 2: Create your indicator
 dvi <- DVI(Cl(SPL))
-dfDVI <- data.frame(dvi) 
+# dfDVI <- data.frame(dvi)
+# Convert indicartor to a tibble
+dvi <- as_data_frame(dvi)
 
 # Step 3: Construct your trading rule
-sig <- Lag(ifelse(dfDVI$dvi < 0.5, 1, -1))
+sig <- Lag(ifelse(dvi$dvi < 0.5, 1, -1))
 
 # Step 4: The trading rules/equity curve
 ret <- ROC(Cl(SPL))*sig
-ret <- ret[2008-01-02/2018-01-09]
+ret <- ret['2009-06-02/2010-09-07']
 eq <- exp(cumsum(ret))
 plot(eq)
 

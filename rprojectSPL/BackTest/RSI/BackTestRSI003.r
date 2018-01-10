@@ -1,5 +1,5 @@
+# https://www.r-bloggers.com/rsi2-evaluation/
 # Attach packages. You can install packages via:
-# install.packages(c(“quantmod”,”TTR”,”PerformanceAnalytics”))
 library(dplyr)
 library(quantmod)
 library(tibble)
@@ -99,17 +99,23 @@ sigdn <- ifelse(sig < 0, sig, 0)
 
 # Calculate rule returns
 ret_up <- ret * sigup
-
 # Convert to a tibble
 ret_up <- as_data_frame(ret_up)
+# Rename Column
 colnames(ret_up) <- 'Long System Return'
 
+# Calculate rule returns
 ret_dn <- ret * sigdn
+# Convert to a tibble
 ret_dn <- as_data_frame(ret_dn)
+# Rename Column
 colnames(ret_dn) <- 'Short System Return'
 
+# Calculate rule returns
 ret_all <- ret * sig
+# Convert to a tibble
 ret_all <- as_data_frame(ret_all)
+# Rename Column
 colnames(ret_all) <- 'Total System Return'
 
 # Create performance graphs
