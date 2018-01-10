@@ -1,5 +1,6 @@
 # Attach packages. You can install packages via:
 # install.packages(c(“quantmod”,”TTR”,”PerformanceAnalytics”))
+library(dplyr)
 library(quantmod)
 library(tibble)
 library(TTR)
@@ -98,11 +99,17 @@ sigdn <- ifelse(sig < 0, sig, 0)
 
 # Calculate rule returns
 ret_up <- ret * sigup
-as_tibble(ret_up)
+
+# Convert to a tibble
+ret_up <- as_data_frame(ret_up)
 colnames(ret_up) <- 'Long System Return'
+
 ret_dn <- ret * sigdn
+ret_dn <- as_data_frame(ret_dn)
 colnames(ret_dn) <- 'Short System Return'
+
 ret_all <- ret * sig
+ret_all <- as_data_frame(ret_all)
 colnames(ret_all) <- 'Total System Return'
 
 # Create performance graphs
