@@ -1,0 +1,16 @@
+https://www.r-bloggers.com/data-analysis-with-projecttemplate-in-rstudio-with-git/
+http://jeromyanglim.blogspot.com.au/2014/05/customising-projecttemplate-in-r.html
+https://www.r-bloggers.com/data-analysis-with-projecttemplate-in-rstudio-with-git/
+https://www.r-bloggers.com/projecttemplate/
+https://www.r-bloggers.com/customising-projecttemplate-in-r/
+https://www.r-bloggers.com/projecttemplate-version-0-1-3-released/
+http://projecttemplate.net/getting_started.html
+http://r-pkgs.had.co.nz/r.html
+https://github.com/jeromyanglim/AnglimModifiedProjectTemplate
+https://github.com/jeromyanglim/AnglimModifiedProjectTemplate
+https://github.com/jeromyanglim/AnglimModifiedProjectTemplate
+https://www.youtube.com/watch?v=CH6CYI6NheI
+https://www.youtube.com/watch?v=gjCbt1Kfge8
+https://github.com/johnmyleswhite/ProjectTemplate
+https://www.r-bloggers.com/data-analysis-with-projecttemplate-in-rstudio-with-git
+https://support.rstudio.com/hc/en-us/articles/200526207-Using-Projects
