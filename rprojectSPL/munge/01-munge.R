@@ -16,33 +16,45 @@
 
 browser()                                                                       # Set Debugger
 
+# Establish Directory Structure
+mainDir <- "."
+subDir <- "AutoTrading"
+
 rootdir <- rprojroot::find_rstudio_root_file()
+atdir   <- file.path(rootdir, subDir)
 datadir <- file.path(rootdir, "data//")
 libdir  <- file.path(rootdir, "lib//")
 srcdir  <- file.path(rootdir, "src//")
 
-mainDir <- "."
-subDir <- "AutoTrading"
-atdir  <- file.path(rootdir, "AutoTrading")
 
 # delete AutoTrading folder if exists. We will start fresh
-# if(file.exists("./AutoTrading")) {                                            # Original Code
+if(dir.exists(file.path(atdir))){
+    dir.remove(atdir)
+}
 
-if(dir.exists(file.path(mainDir, subDir))) {
+# if(dir.exists(file.path(mainDir, subDir))) {
+# dir.remove(atdir)
+# }
+# if(file.exists("./AutoTrading")) {                                            # Original Code
+#if(dir.exists(file.path(mainDir, subDir))) {
+#   unlink(substr(atdir, 1, nchar(atdir)-1), recursive=TRUE)
 # if(dir.exists(atdir)) {
 #   unlink("./AutoTrading", recursive=TRUE)                                    # Original Code
-#    unlink(file.path(mainDir, subDir), recursive=TRUE)
-   unlink(atdir, recursive=TRUE)
-}
-# create AutoTrading folders
+#   unlink(file.path(mainDir, subDir), recursive=TRUE)
+#   unlink(atdir, recursive=TRUE)
+#}
 
+
+# create AutoTrading folders
+setwd(rootdir)
 dir.create("./AutoTrading")
 dir.create("./AutoTrading/stockdata")
 dir.create("./Autotrading/functions")
 
 ####Listing 2.1: Setting Path Variables
 # rootdir <- "~/Autotrading"
-atdir <- file.path(rootdir, "AutoTrading//")
-datadir <- "./AutoTrading/stockdata/"
+
+stockdatadir <- "./AutoTrading/stockdata/"
 functiondir <- "./AutoTrading/functions/"
 ####
+
