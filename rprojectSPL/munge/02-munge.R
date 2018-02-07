@@ -1,100 +1,199 @@
-# Data manipulations
-# Highlight and run command below do load project without munging.
-# This is useful when debugging data manipulation code.
-# rm(list = ls()); library(ProjectTemplate); load.project(list(munging=FALSE)) 
-
-# It is often useful to create sets of variable names
-# By convention, the list that stores these variable sets is called 'v'
-# v <- list()
-
-library(caTools)                                                                # Contains several basic utility functions including: moving (rolling, running) window statistic functions,
-library(tidyquant)                                                              # Loads tidyquant, tidyverse, lubridate, quantmod, TTR, and xts
-library(TTR)                                                                    # Technical Trading Rules package
-# Date Processing --------------------------------------------------------------
-#end <- ymd("2017-10-30")
-end <-  today()
-from <- today() - years(10)
-start <- end - weeks(52)
-# SPL Processing ---------------------------------------------------------------
-SPL <- tq_get("SPL.AX")                                                         # Get SPL Stock Prices
-SPL<-SPL[complete.cases(SPL),]                                                  # Delete NA
-date <- SPL$date                                                                # Create date variable
-# Example 1: Annual Returns ----------------------------------------------------                                                                                
-tblRetAnnual <- SPL %>%
-  tq_transmute(select     = close, 
-               mutate_fun = periodReturn, 
-               period     = "yearly", 
-               type       = "arithmetic")
-# Example 2: Use tq_mutate_xy to use functions with two columns required--------
-# SPL %>%
-#  tq_mutate_xy(x = close, y = volume, mutate_fun = EVWMA,
-#               col_rename = "EVWMA")
-
-# Example 2B: Getting Daily Log Returns-----------------------------------------
-tblRetDailyLog <- SPL %>%
-  tq_transmute(select     = adjusted, 
-               mutate_fun = periodReturn, 
-               period     = "daily", 
-               type       = "log",
-               col_rename = "daily.returns")
-# Example 3: MACD to Visualize Moving Average Convergence Divergence------------
-tblMACD <- SPL %>%
-  tq_mutate(select     = close, 
-            mutate_fun = MACD, 
-            nFast      = 12, 
-            nSlow      = 26, 
-            nSig       = 9, 
-            maType     = SMA) %>%
-  mutate(diff = macd - signal) %>%
-  select(-(open:volume))
-# Example 4: Max and Min Price for Each Quarter---------------------------------
-tblRetMaxByQtr <- SPL %>%
-  tq_transmute(select     = adjusted, 
-               mutate_fun = apply.quarterly, 
-               FUN        = max, 
-               col_rename = "max.close") %>%
-  mutate(year.qtr = paste0(year(date), "-Q", quarter(date))) %>%
-  select(-date)
-
-tblRetMinByQtr <- SPL %>%
-  tq_transmute(select     = adjusted, 
-               mutate_fun = apply.quarterly, 
-               FUN        = min, 
-               col_rename = "min.close") %>%
-  mutate(year.qtr = paste0(year(date), "-Q", quarter(date))) %>%
-  select(-date)
+###########################################
+### This script is a one-piece runnable ###
+### example constructed from code       ###
+### using Quandl API instead of yahoo!  ###
+### It is Windows and	UNIX	        ###
+### compatible.				            ###
+###########################################
 
 
-tblRetByQtr <- left_join(tblRetMaxByQtr, tblRetMinByQtr,
-                         by = c("year.qtr" = "year.qtr"))
-# Example 5: Chaikan AD --------------------------------------------------------
-# tblchaikanAD <- SPL %>%
-#   tq_transmute(
-#                mutate_fun = chaikinAD, 
-#                HLC = high:low:close,
-#                volume = volume
-#                )
-# Delete Table NA --------------------------------------------------------------  
-tblMACD <-tblMACD[complete.cases(tblMACD),]                                      # Delete MACD NA  
-# Reformat Table ---------------------------------------------------------------
-# tblchaikanAD
-tblMACD <- data.frame("spl",tblMACD)                                            # Create MACD Table
-tblRetAnnual <- data.frame("spl",tblRetAnnual)                                  # Create Annual Returns Table
-tblRetDailyLog <- data.frame("spl",tblRetDailyLog)                              # Create Daily Log Returns Table
-tblRetMaxByQtr <- data.frame("spl",tblRetMaxByQtr)                              # Create Max Returns by Quarter Table
-tblRetMinByQtr <- data.frame("spl",tblRetMinByQtr)                              # Create Min Returns by Quarter Table
-tblRetByQtr <- data.frame("spl",tblRetByQtr)                                    # Create Min Returns by Quarter Table
-# Rename columns ---------------------------------------------------------------
-colnames(tblMACD) <- c( "symbol", "date", "adjusted", "macd", "signal","diff")  # Rename tblMACD Table Columns
-colnames(tblRetAnnual) <- c( "symbol", "date", "retAnnual")                     # Rename tblRetAnnual Table Columns
-colnames(tblRetDailyLog) <- c( "symbol", "date", "retDaily")                    # Rename tblDailyLogReturns Table Columns
-colnames(tblRetMaxByQtr) <- c( "symbol", "close", "dateYrQtr")                  # Rename tblRetMaxByQtr Table Columns
-colnames(tblRetMinByQtr) <- c( "symbol", "close", "dateYrQtr")                  # Rename tblRetMinByQtr Table Columns
-colnames(tblRetByQtr) <- c( "symbol", "closeMax", "dateYrQtr", "closeMin")      # Rename tblRetByQtr Table Columns
-# Reorder  columns -------------------------------------------------------------
-tblMACD <- tblMACD[, c(2, 1, 3, 4, 5, 6)]                                       # Reorder tblMACD columns
-tblRetAnnual <- tblRetAnnual[, c(2, 1, 3)]                                      # Reorder tblRetAnnual columns
-tblRetDailyLog <- tblRetDailyLog[, c(2, 1, 3)]                                  # Reorder tblDailyLogReturns columns
-tblRetMaxByQtr <- tblRetMaxByQtr[, c(3, 1, 2)]                                  # Reorder tblRetMaxByQtr columns
-tblRetMinByQtr <- tblRetMinByQtr[, c(3, 1, 2)]                                  # Reorder tblRetMinByQtr columns
-tblRetByQtr <- tblRetByQtr[, c(3, 1, 2, 4)]                                     # Reorder tblRetByQtr columns
+# The goal is use Quandl API instead of Yahoo! API
+# for downloading and Yahoo! YQL for updating
+# it is intended to reproduce the same same steps
+# as stated on the text book.
+# The end result is a DATA file similar to
+# listings in Chapter 2
+# Quandl https://www.quandl.com/
+# Quandl API r https://www.quandl.com/tools/r
+# Quandl doocs https://www.quandl.com/tools/r
+# Quandl has the capability of downloading data frames as zoo objects
+# therefore, we will re-name each column after downloading and writing as csv
+
+# set root as working directory, change it to your wd
+# setwd("~")
+# setwd(rootdir)
+
+# browser()                                                                       # Set Debugger
+
+# mainDir <- "."
+# subDir <- "AutoTrading"
+# atdir  <- file.path(rootdir, "AutoTrading")
+
+# delete AutoTrading folder if exists. We will start fresh
+# if(file.exists("./AutoTrading")) {                                            # Original Code
+
+# if(dir.exists(file.path(mainDir, subDir))) {
+# if(dir.exists(atdir)) {
+#   unlink("./AutoTrading", recursive=TRUE)                                    # Original Code
+#    unlink(file.path(mainDir, subDir), recursive=TRUE)
+#    unlink(atdir, recursive=TRUE)
+# }
+# create AutoTrading folders
+
+# dir.create("./AutoTrading")
+# dir.create("./AutoTrading/stockdata")
+# dir.create("./Autotrading/functions")
+
+# ####Listing 2.1: Setting Path Variables
+# rootdir <- "~/Autotrading"
+# atdir <- file.path(rootdir, "AutoTrading//")
+# datadir <- "./AutoTrading/stockdata/"
+# functiondir <- "./AutoTrading/functions/"
+# ####
+
+####Listing 2.2 modified for quandl instead of Yahoo!
+#insert your Quandl APO here
+require(Quandl)
+quandl_api = "ZtvE2BmA_dxMQvnn_mWU"
+
+#add my key to Quandl API
+Quandl.api_key(quandl_api)
+
+# this function downloads the columns needed as from start_date
+quandl_get <- function(sym, start_date = "2017-01-01") {
+    require(devtools)
+    require(Quandl)
+    # create a vector with all lines
+    tryCatch(Quandl(c(
+        paste0("WIKI/", sym, ".8"),  #  Adj. Open
+        paste0("WIKI/", sym, ".9"),  # Adj. High
+        paste0("WIKI/", sym, ".10"), # Adj. Low
+        paste0("WIKI/", sym, ".11"), # Adj. Close
+        paste0("WIKI/", sym, ".12")), # Adj. Volume
+        start_date = start_date,
+        type = "zoo"
+    ))
+}
+####
+
+
+# save quandl.R file in /functions with 'quandl'_get function
+setwd(libdir)
+dump(list = c("quandl_get"), "quandl.R")
+#S <- read.csv(url, header = FALSE, stringsAsFactors=F)[,1]
+
+####Listing 2.3: List of S&P 500 Stocks####
+# Up-to-date at time of writing
+
+url <- "http://trading.chrisconlan.com/SPstocks.csv"
+
+# Option A: Read S from url
+# S <- as.character(read.csv(url, header = FALSE)[,1])
+
+# Option B: for testing read a S-test.R CSV file with shorter stock tickers
+S <- c("MMM", "ACN", "BLK", "HRB", "BWA", "BF-B")
+
+#Change '-' for '_'. Quandl needs it
+#Method 1, generic
+S <- gsub("-", "_", S)
+
+# setwd(rootdir)
+dump(list = "S", "S.R")
+#####
+
+#### 2.4
+# Load "invalid.R" file if available
+invalid <- character(0)
+# setwd(rootdir)
+if("invalid.R" %in% list.files()) source("invalid.R")
+
+
+# Find all symbols not in directory and not missing
+# setwd(datadir)
+toload <- setdiff(S[!paste0(S, ".csv") %in% list.files()], invalid)
+
+#load new column names
+column_names <- c("Open", "High", "Low", "Close", "Volume")
+
+# Fetch symbols with quandl_get function, save as .csv or missing
+source(paste0(libdir, "quandl.R"))
+if(length(toload) != 0){
+    for(i in 1:length(toload)){
+        
+        df <- quandl_get(toload[i])
+        
+        if(!is.null(df)) {
+            #changing names
+            colnames(df) <- column_names
+            # as zoo objects downloaded, row names must be TRUE. Use write ZOO
+            write.zoo(df, file = paste0(toload[i], ".csv"))
+        } else {
+            invalid <- c(invalid, toload[i])
+        }
+        
+    }
+}
+
+# setwd(rootdir)
+dump(list = c("invalid"), "invalid.R")
+
+# Clears R environment except for path variables and functions
+rm( list = setdiff( ls(), c(" rootdir", "libdir", "datadir", "quandl_get", "column_names")))
+gc()
+####
+
+#### 2.5
+# setwd(datadir)
+S <- sub(".csv", "", list.files())
+
+require(data.table)
+
+DATA <- list()
+for(i in S){
+    suppressWarnings(
+        # read as Zoo instead of fread
+        # DATA[[i]] <- fread(paste0(i, ".csv"), sep = ","))
+        DATA[[i]] <- read.zoo(paste0(i, ".csv"), header = TRUE)
+    )
+    # sort by index
+    DATA[[i]] <- zoo(DATA[[i]], order.by = index(DATA[[i]]))
+}
+####
+
+#### 2.6 update method with quandl_get function
+# To prove that this works, at this point you might want to delete some rows in
+# any of the csv files under stockdata.
+# force system time to "EST"
+Sys.setenv(TZ="EST")
+currentTime <- Sys.time()
+
+for(i in S){
+    # Store greatest date within DATA for symbol i
+    maxdate <- max(index(DATA[[i]])[nrow(DATA[[i]])])
+    if(as.numeric(difftime(currentTime, maxdate, units = "hours")) >= 40.25){
+        
+        # Push the maxdate forward one day
+        maxdate <- strptime(maxdate, "%Y-%m-%d") + 86400
+        
+        weekend <- sum(c("Saturday", "Sunday") %in%
+                           weekdays(c(maxdate, currentTime))) == 2
+        
+        if(!weekend){
+            # if !weekend then start_date for quandl = maxdate
+            start_date = as.character(maxdate)
+            df <- quandl_get(i, start_date = start_date)
+            colnames(df) <- column_names
+            if(!is.null(df)){
+                if(all(!is.na(df)) & nrow(df) > 0){
+                    # df <- df[nrow(df):1] # not needed, is type = "zoo"
+                    # write csv file with new data, duplicates might exist
+                    write.zoo(df, file = paste0(i, ".csv"),
+                              row.names = FALSE, col.names = FALSE, append = TRUE)
+                    DATA[[i]] <- rbind(DATA[[i]], df)
+                    # just in case, sort by index. Remove duplicates?
+                    DATA[[i]] <- zoo(DATA[[i]], order.by = index(DATA[[i]]))
+                }
+            }
+        }
+    }
+}

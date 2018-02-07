@@ -1,0 +1,26 @@
+Mission Statement: 
+    We will come up with an automated trading strategy that will trade a portfolio of liquid instruments in the market. 
+    The strategy will be efficient, robust, and scalable. Furthermore, the strategy will be profitable and have low risk.
+
+Process 1: Initial Acquisition and Storage
+    1. Fetch the list of desired stocks.
+    2. If all the desired stocks are present in storage directory,
+        a. End Process 1 and proceed to Process 2.
+    3. If the desired stocks are missing from storage directory,
+        a. Fetch missing stock data as far back in time as desired.
+        b. Store data on the directory in the drive for access by other processes.
+        c. Clear the R environment.
+        d. End Process 1 and proceed to Process 2.
+• Process 2: Loading Data into Memory (R Environment)
+    1. Fetch the names of all files in the storage directory.
+    2. Load data from the drive into the R environment.
+    3. If data is up to date,
+        a. Proceed to step 5.
+    4. If data is not up to date,
+        a. Fetch missing data.
+        b. Append new data to the existing data in the drive.
+        c. Append new data to the existing data in the R environment.
+    5. Prepare data in memory.
+        a. Compute the date template.
+        b. Organize data according to date template.
+        c. Organize data in the zoo object with the uniform date attribute.
