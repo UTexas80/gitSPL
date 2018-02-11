@@ -13,6 +13,9 @@
 # mydata = Quandl("FRED/GDP", start_date="2001-12-31", end_date="2005-12-31")
 # mydata_columns <- Quandl(c("WIKI/AAPL.8", "WIKI/AAPL.9"), start_date="2017-01-01")
 
+library('ProjectTemplate')
+load.project()
+
 rootDir <- rprojroot::find_rstudio_root_file()
 libdir <- file.path(rootDir, "lib")
 setwd(libdir)

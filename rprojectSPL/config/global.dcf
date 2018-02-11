@@ -5,12 +5,12 @@ data_ignore:
 cache_loading: FALSE
 recursive_loading: TRUE
 munging: TRUE
-logging: FALSE
-logging_level: INFO
+logging: TRUE
+logging_level: DEBUG
 load_libraries: TRUE
-libraries: caTools, data.table, devtools, dplyr, filesstrings, ggplot2, ggthemes, here, knitr, lubridate, modules, PerformanceAnalytics, plotly, plyr, Quandl, quantmod, quantstrat, readxl, reshape, reshape2, rJava, rprojroot, stringr, tibble,  tidyquant, TTR, xlsx
+libraries: caTools, DataExplorer, data.table, devtools, dplyr, filesstrings, ggplot2, ggthemes, here, knitr, lubridate, modules, PerformanceAnalytics, plotly, plyr, Quandl, quantmod, quantstrat, readxl, reshape, reshape2, rJava, rprojroot, stringr, tibble,  tidyquant, TTR, xlsx
 as_factors: FALSE
-data_tables: FALSE
+data_tables: TRUE
 attach_internal_libraries: FALSE
 cache_loaded_data: FALSE
 sticky_variables: NONE
