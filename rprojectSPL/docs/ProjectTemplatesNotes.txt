@@ -1,0 +1,115 @@
+o Directory:
+    - cache: Here you'll store any data sets that (a) are generated during a preprocessing step and (b) don't need to be regenerated every single time you analyze your data. 
+        + You can use the `cache()` function to store data to this directory automatically. Any data set found in both the `cache` and `data` directories will be drawn from `cache` instead of `data` based on ProjectTemplate's priority rules.
+    - config: Here you'll store any configurations settings for your project. Use the DCF format that the `read.dcf()` function parses.
+        + global.dcf
+            version: 0.8
+            data_loading: TRUE
+            data_loading_header: TRUE
+            data_ignore:
+            cache_loading: TRUE
+            recursive_loading: FALSE
+            munging: TRUE
+            logging: TRUE
+            logging_level: INFO
+            load_libraries: TRUE
+            libraries: reshape, plyr, dplyr, ggplot2, stringr, lubridate
+            as_factors: TRUE
+            data_tables: FALSE
+            attach_internal_libraries: FALSE
+            cache_loaded_data:  TRUE
+            sticky_variables: NONE
+
+    - data: Here you'll store your raw data files. If they are encoded in a supported file format, they'll automatically be loaded when you call `load.project()`.
+    - diagnostics: Here you can store any scripts you use to diagnose your data sets for corruption or problematic data points.
+    - docs: Here you can store any documentation that you've written about your analysis.
+        + When pushing the project to GitHub you can use this directory as the root for a GitHub Pages website for the project. For more information see
+            https://github.com/blog/2289-publishing-with-github-pages-now-as-easy-as-1-2-3
+    - graphs: Here you can store any graphs that you produce.
+    - lib: Here you'll store any files that provide useful functionality for your work, but do not constitute a statistical analysis per se. 
+        
+        `lib/globals.R`
+            + If you have project specific configuration that you'd like to store in the config object, you can specify that in `lib/globals.R`.  
+            + This is the first file loaded from `lib`, so any functions in `lib`, `munge` or `src` can reference this configuration by simply using the `config$my_config_var` form.
+            # Add any project specific configuration here.
+            add.config(
+            
+            )
+        
+        `lib/helpers.R`
+            Specifically, you should use the `lib/helpers.R` script to organize any functions you use in your project that aren't quite general enough to belong in a package.
+                helper.function <- function()
+                {
+                    return(1)
+                }    
+    
+    - logs: Here you can store a log file of any work you've done on this project. If you'll be logging your work, we recommend using the [log4r][1] package, which ProjectTemplate will automatically load for you if you turn the `logging` configuration setting on.
+        + The default loglevel is set at "INFO", but can be configured using the `logging_level` setting in the configuration.
+        + For valid levels see the `log4r` documentation.
+            [1]: https://github.com/johnmyleswhite/log4r
+
+    - munge: Here you can store any preprocessing or data munging code for your project. 
+        + For example, if you need to add columns at runtime, merge normalized data sets or globally censor any data points, that code should be stored in the `munge` directory. 
+        + The preprocessing scripts stored in `munge` will be executed sequentially when you call `load.project()`, so you should append numbers to the filenames to indicate their sequential order.
+        + example preprocessing script:
+            ~ 01-A.R
+                first.letter.counts <- ddply(letters, c('FirstLetter'), nrow)
+                second.letter.counts <- ddply(letters, c('SecondLetter'), nrow)
+    - profiling: Here you can store any scripts you use to benchmark and time your code.
+    - reports: Here you can store any output reports, such as HTML or LaTeX versions of tables, that you produce. Sweave or brew documents should also go in the `reports` directory.
+    - src: Here you'll store your final statistical analysis scripts. 
+        + You should add the following piece of code to the start of each analysis script: `library('ProjectTemplate); load.project()`. 
+        + You should also do your best to ensure that any code that's shared between the analyses in `src` is moved into the `munge` directory; if you do that, you can execute all of the analyses in the `src` directory in parallel. 
+        + A future release of ProjectTemplate will provide tools to automatically execute every individual analysis from `src` in parallel.
+        + eda.R:
+            library('ProjectTemplate')
+            load.project()
+
+            for (dataset in project.info$data)
+            {
+            message(paste('Showing top 5 rows of', dataset))
+            print(head(get(dataset)))
+            }
+    - tests: Here you can store any test cases for the functions you've written. Your test files should use `testthat` style tests so that you can call the `test.project()` function to automatically execute all of your test code.
+        # Example Unit Testing Script
+        expect_that(1, equals(1))
+
+o ReadMe:
+Welcome to ProjectTemplate!
+
+This file introduces you to ProjectTemplate, but you should eventually replace
+the contents of this file with an introduction to your project. People who
+work with your data in the future will thank you for it, including your future
+self.
+
+ProjectTemplate is an R package that helps you organize your statistical
+analysis projects. Since you're reading this file, we'll assume that you've
+already called `create.project()` to set up this project and all of its
+contents.
+
+To load your new project, you'll first need to `setwd()` into the directory
+where this README file is located. Then you need to run the following two
+lines of R code:
+
+	library('ProjectTemplate')
+	load.project()
+
+After you enter the second line of code, you'll see a series of automated
+messages as ProjectTemplate goes about doing its work. This work involves:
+* Reading in the global configuration file contained in `config`.
+* Loading any R packages you listed in he configuration file.
+* Reading in any datasets stored in `data` or `cache`.
+* Preprocessing your data using the files in the `munge` directory.
+
+Once that's done, you can execute any code you'd like. For every analysis
+you create, we'd recommend putting a separate file in the `src` directory.
+If the files start with the two lines mentioned above:
+
+	library('ProjectTemplate')
+	load.project()
+
+You'll have access to all of your data, already fully preprocessed, and
+all of the libraries you want to use.
+
+For more details about ProjectTemplate, see http://projecttemplate.net
+    - 
