@@ -57,10 +57,11 @@ libdir = file.path(config$root, "lib\\")
 ####Listing 2.2 modified for quandl instead of Yahoo!
 #insert your Quandl APO here
 require(Quandl)
-quandl_api = "ZtvE2BmA_dxMQvnn_mWU"
+# quandl_api = "ZtvE2BmA_dxMQvnn_mWU"
 
 #add my key to Quandl API
-Quandl.api_key(quandl_api)
+# Quandl.api_key(quandl_api)
+Quandl.api_key(config$quandl_api)
 
 # this function downloads the columns needed as from start_date
 quandl_get <- function(sym, start_date = "2017-01-01") {

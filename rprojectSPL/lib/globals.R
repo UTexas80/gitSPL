@@ -24,5 +24,6 @@ add.config(
     srcdir = srcdir,
     isUNIX = FALSE,
     maxAssets = 10,
-    workers = 4
+    workers = 4,
+    quandl_api = "ZtvE2BmA_dxMQvnn_mWU"
 )
