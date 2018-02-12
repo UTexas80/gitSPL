@@ -1,5 +1,5 @@
 # Place raw data in this folder
-# Use this r-scrip file to do any preliminary processing of raw data files in preparation for
+# Use this r-script file to do any preliminary processing of raw data files in preparation for
 # exporting to the "data" folder.
 #
 # Common data manipualtions at this stage
