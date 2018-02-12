@@ -21,9 +21,11 @@ add.config(
     root = root,
     atdir = atdir,    
     datadir = datadir,
+    libdir = libdir,
     srcdir = srcdir,
     isUNIX = FALSE,
     maxAssets = 10,
     workers = 4,
-    quandl_api = "ZtvE2BmA_dxMQvnn_mWU"
+    quandl_api = "ZtvE2BmA_dxMQvnn_mWU",
+    urlSP500 = "http://trading.chrisconlan.com/SPstocks.csv"
 )
