@@ -4,6 +4,7 @@
 
 root      =   rprojroot::find_rstudio_root_file()
 atdir     =   file.path(root, "AutoTrading//")
+cachedir  =   file.path(root, "cache//")
 datadir   =   file.path(root, "data//")
 libdir    =   file.path(root, "lib//")
 srcdir    =   file.path(root, "src//")
@@ -19,7 +20,8 @@ add.config(
     model    = "./Platform/model/",
     plan    = "./Platform/plan/",
     root = root,
-    atdir = atdir,    
+    atdir = atdir,
+    cachedir = cachedir,
     datadir = datadir,
     libdir = libdir,
     srcdir = srcdir,
