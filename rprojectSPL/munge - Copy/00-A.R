@@ -96,22 +96,22 @@ Quandl.api_key(config$quandl_api)
 # S <- as.character(read.csv(url, header = FALSE)[,1])
 
 # Option B: for testing read a S-test.R CSV file with shorter stock tickers
-# S <- c("MMM", "ACN", "BLK", "HRB", "BWA", "BF-B")
+S <- c("MMM", "ACN", "BLK", "HRB", "BWA", "BF-B")
 
 #Change '-' for '_'. Quandl needs it
 #Method 1, generic
-# S <- gsub("-", "_", S)
+S <- gsub("-", "_", S)
 
 # setwd(rootdir)
-# dump(list = "S", "S.R")
+dump(list = "S", "S.R")
 #####
 
 #### 2.4
 # Load "invalid.R" file if available
 invalid <- character(0)
 
-# setwd(rootdir)
-# if("invalid.R" %in% list.files()) source("invalid.R")
+setwd(root)
+if("invalid.R" %in% list.files()) source("invalid.R")
 
 
 # Find all symbols not in directory and not missing
@@ -122,14 +122,14 @@ toload <- setdiff(S[!paste0(S, ".csv") %in% list.files()], invalid)
 column_names <- c("Open", "High", "Low", "Close", "Volume")
 
 # Fetch symbols with quandl_get function, save as .csv or missing
-source(paste0(libdir, "quandl.R"))
+# source(paste0(libdir, "quandl.R"))
 
 setwd(datadir)
 
 if(length(toload) != 0){
     for(i in 1:length(toload)){
         
-        df <- quandl_get(toload[i])
+        df <- quantmod_get(toload[i])
         
         if(!is.null(df)) {
             #changing names
@@ -147,8 +147,8 @@ if(length(toload) != 0){
 dump(list = c("invalid"), "invalid.R")
 
 # Clears R environment except for path variables and functions
-rm( list = setdiff( ls(), c(" rootdir", "libdir", "datadir", "quandl_get", "column_names")))
-gc()
+# rm( list = setdiff( ls(), c(" rootdir", "libdir", "datadir", "quandl_get", "column_names")))          #20180213
+# gc()                                                                                                  #20180213
 ####
 
 #### 2.5
@@ -210,4 +210,3 @@ for(i in S){
         }
     }
 }
-

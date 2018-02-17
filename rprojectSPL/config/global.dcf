@@ -2,15 +2,15 @@ version: 0.8
 data_loading: TRUE
 data_loading_header: TRUE
 data_ignore:
-cache_loading: FALSE
+cache_loading: TRUE
 recursive_loading: TRUE
 munging: TRUE
 logging: TRUE
-logging_level: DEBUG
+logging_level: INFO
 load_libraries: TRUE
-libraries: caTools, DataExplorer, data.table, devtools, dplyr, filesstrings, ggplot2, ggthemes, here, knitr, lubridate, modules, PerformanceAnalytics, plotly, plyr, Quandl, quantmod, quantstrat, readxl, reshape, reshape2, rJava, rprojroot, stringr, tibble,  tidyquant, TTR, xlsx
+libraries: BatchGetSymbols, caTools, DataExplorer, data.table, devtools, dplyr, filesstrings, foreach, ggplot2, ggthemes, here, knitr, lubridate, modules, openxlsx, PerformanceAnalytics, plotly, plyr, Quandl, quantmod, quantstrat, readxl, reshape, reshape2, rJava, rprojroot, stringr, tibble,  tidyquant, TTR, xlsx, zoo
 as_factors: FALSE
 data_tables: TRUE
 attach_internal_libraries: FALSE
-cache_loaded_data: FALSE
+cache_loaded_data: TRUE
 sticky_variables: NONE

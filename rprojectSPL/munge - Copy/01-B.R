@@ -1,7 +1,10 @@
-library(zoo)
+# library(zoo)
 
 # Compute the date template as a column of a data.frame for merging
 # Considers date are strings in YYYY-MM-DD format
+
+#browser()                                                                       # Set Debugger
+
 datetemp <- sort(unique(unlist(sapply(DATA, function(v) v[["Date"]]))))
 datetemp <- data.frame(datetemp, stringsAsFactors = FALSE)
 names(datetemp) <- "Date"
