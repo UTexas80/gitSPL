@@ -1,7 +1,11 @@
 
 l.out <- BatchGetSymbols(tickers = tickers, 
                          first.date = first.date,
-                         last.date = last.date)
+#                         last.date = last.date)
+                        last.date = last.date,
+                            cache.folder = 'cache')
+#                         cache.folder = file.path(".", 'cache'))
+#                         cache.folder = file.path(root, 'cache') # cache in tempdir())
 
 # Stock Download Processing -----------------------------------------------------------------------------------
 # https://stackoverflow.com/questions/3507744/downloading-yahoo-stock-prices-in-r
