@@ -11,7 +11,7 @@ srcdir    =   file.path(root, "src//")
 first.date <- Sys.Date() - 365
 last.date <- Sys.Date()
 symbols <- c("SPL.AX", "SPHRF", "SPHRY")
-tickers <- c('SPL', 'SPHRF','SPHRY')
+tickers <- c('SPL.AX', 'SPHRF','SPHRY')
 
 
 add.config(
