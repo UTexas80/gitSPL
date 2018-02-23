@@ -26,3 +26,12 @@ ip
 
 # Stock Download Processing -----------------------------------------------------------------------------------
 # https://stackoverflow.com/questions/3507744/downloading-yahoo-stock-prices-in-r
+
+# Description: Test if the object is a tibble.
+
+# is.tibble {tibble}	R Documentation
+
+# Usage
+
+# is.tibble(x)
+# is_tibble(x)

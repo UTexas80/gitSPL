@@ -4,8 +4,8 @@ l.out <- BatchGetSymbols(tickers = tickers,
                         last.date = last.date,
                         cache.folder = 'cache')
 
-# Download data in tidy format. 
-data <- tq_get(symbols)                                                         # Get Stock Prices
+# Download data in tidy format, i.e, Get quantitative data in tibble format
+data <- tq_get(symbols, complete_cases = TRUE)                                  # Get Stock Prices
 data %>% mutate_cond(symbol == "SPL.AX", date = date + 1)
 
 # Ticker symbols as column names for closing prices
