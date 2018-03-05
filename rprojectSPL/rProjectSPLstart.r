@@ -185,5 +185,29 @@ Boxplot:
         In the middle of the box is a line that displays the median, i.e. 50th percentile, of the distribution. 
             These three lines give you a sense of the spread of the distribution and whether or not the distribution is symmetric about the median or skewed to one side.
 7.6 Patterns and models
+Patterns in your data provide clues about relationships. 
+If a systematic relationship exists between two variables it will appear as a pattern in the data. 
+If you spot a pattern, ask yourself:
 
+    Could this pattern be due to coincidence (i.e. random chance)?
+    How can you describe the relationship implied by the pattern?
+    How strong is the relationship implied by the pattern?
+    What other variables might affect the relationship?
+    Does the relationship change if you look at individual subgroups of the data?
 
+Patterns provide one of the most useful tools for data scientists because they reveal covariation.
+If you think of variation as a phenomenon that creates uncertainty, covariation is a phenomenon that reduces it.
+If two variables covary, you can use the values of one variable to make better predictions about the values of the second.
+Models are a tool for extracting patterns out of data.
+
+7.7 ggplot2 calls:
+Typically, the first one or two arguments to a function are so important that you should know them by heart. 
+    The first two arguments to ggplot() are data and mapping, and the first two arguments to aes() are x and y. e.g.,
+
+        ggplot(data = faithful, mapping = aes(x = eruptions)) + 
+            geom_freqpoly(binwidth = 0.25)
+
+    Rewriting the previous plot more concisely yields:
+
+        ggplot(faithful, aes(eruptions)) + 
+            geom_freqpoly(binwidth = 0.25)
