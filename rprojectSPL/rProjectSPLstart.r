@@ -130,6 +130,13 @@ Process:
 There is no rule about which questions you should ask to guide your research. However, two types of questions will always be useful for making discoveries within your data. You can loosely word these questions as:
 
 7.2 Questions
+
+The key to asking quality questions is to generate a large quantity of questions. 
+    The key to asking good follow-up questions will be to 
+            rely on your curiosity (What do you want to learn more about?) as well as your skepticism (How could this be misleading?).
+You can quickly drill down into the most interesting parts of your data—and develop a set of thought-provoking questions—if you follow up each question with a new question based on what you find.
+
+Two types of questions will always be useful for making discoveries within your data.
     1. What type of variation occurs within my variables?
     2. What type of covariation occurs between my variables?
 
@@ -141,3 +148,42 @@ There is no rule about which questions you should ask to guide your research. Ho
     Tabular data is a set of values, each associated with a variable and an observation. Tabular data is tidy if each value is placed in its own “cell”, each variable in its own column, and each observation in its own row.
 
 7.3 Variation
+Variation is the tendency of the values of a variable to change from measurement to measurement. 
+Every variable has its own pattern of variation, which can reveal interesting information.
+The best way to understand that pattern is to visualise the distribution of the variable’s values.
+How you visualise the distribution of a variable will depend on whether the variable is categorical or continuous. 
+    A variable is categorical if it can only take one of a small set of values.
+        To examine the distribution of a categorical variable, use a bar chart:
+    A variable is continuous if it can take any of an infinite set of ordered values.
+        To examine the distribution of a continuous variable, use a histogram:
+            A histogram divides the x-axis into equally spaced bins and then uses the height of a bar to display the number of observations that fall in each bin
+
+7.3.2 Typical Values
+To turn bar chart/histogram information into useful questions, look for anything unexpected:
+
+    Which values are the most common? Why?
+    Which values are rare? Why? Does that match your expectations?
+    Can you see any unusual patterns? What might explain them?            
+
+7.3.3 Unusual Values
+Outliers are observations that are unusual; data points that don’t seem to fit the pattern. 
+It’s good practice to repeat your analysis with and without the outliers. 
+    If they have minimal effect on the results, and you can’t figure out why they’re there, it’s reasonable to replace them with missing values, and move on. 
+        However, if they have a substantial effect on your results, you shouldn’t drop them without justification. 
+            You’ll need to figure out what caused them (e.g. a data entry error) 
+
+7.4 Missing Values:
+
+
+7.5 covariation
+If variation describes the behavior within a variable, covariation describes the behavior between variables.
+Covariation is the tendency for the values of two or more variables to vary together in a related way.
+The best way to spot covariation is to visualise the relationship between two or more variables.
+7.5.1 A categorical and coninuous variable
+Boxplot: 
+    A box that stretches from the 25th percentile of the distribution to the 75th percentile, a distance known as the interquartile range (IQR). 
+        In the middle of the box is a line that displays the median, i.e. 50th percentile, of the distribution. 
+            These three lines give you a sense of the spread of the distribution and whether or not the distribution is symmetric about the median or skewed to one side.
+7.6 Patterns and models
+
+
