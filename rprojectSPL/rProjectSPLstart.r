@@ -211,3 +211,41 @@ Typically, the first one or two arguments to a function are so important that yo
 
         ggplot(faithful, aes(eruptions)) + 
             geom_freqpoly(binwidth = 0.25)
+
+###############################################################################
+8. Workflow: projects
+###############################################################################
+
+8.1 What is real?
+    Keyboard shortcuts:
+        
+        1. Press Cmd/Ctrl + Shift + F10 to restart RStudio.
+        2. Press Cmd/Ctrl + Shift + S to rerun the current script.
+
+8.2 Where does your analysis live?
+    Working directory:
+        This is where R looks for files that you ask it to load, and where it will put any files that you ask it to save. 
+            RStudio shows your current working directory at the top of the console:
+
+8.3 Paths and directories:
+    Paths and directories are a little complicated because there are two basic styles of paths: Mac/Linux and Windows. There are three chief ways in which they differ:
+        1. The most important difference is how you separate the components of the path. Mac and Linux uses slashes (e.g. plots/diamonds.pdf) and Windows uses backslashes (e.g. plots\diamonds.pdf)
+        2. Absolute paths (i.e. paths that point to the same place regardless of your working directory) look different. 
+            In Windows they start with a drive letter (e.g. C:) or two backslashes (e.g. \\servername) and in Mac/Linux they start with a slash “/” (e.g. /users/hadley). 
+            You should never use absolute paths in your scripts, because they hinder sharing: no one else will have exactly the same directory configuration as you.
+        3. The last minor difference is the place that ~ points to. ~ is a convenient shortcut to your home directory. 
+            Windows doesn’t really have the notion of a home directory, so it instead points to your documents directory.
+
+
+8.5 Summary
+
+In summary, RStudio projects give you a solid workflow that will serve you well in the future:
+
+    Create an RStudio project for each data analysis project.
+    Keep data files there; we’ll talk about loading them into R in data import.
+    Keep scripts there; edit them, run them in bits or as a whole.
+    Save your outputs (plots and cleaned data) there.
+    Only ever use relative paths, not absolute paths.
+
+Everything you need is in one place, and cleanly separated from all the other projects that you are working on.
+
