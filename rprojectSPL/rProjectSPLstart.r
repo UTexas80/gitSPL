@@ -640,6 +640,124 @@ The principles of tidy data seem so obvious that you might wonder if you’ll ev
         You can fill in missing values with fill(). 
             It takes a set of columns where you want missing values to be replaced by the most recent non-missing value (sometimes called last observation carried forward).
  
- ###############################################################################
+###############################################################################
 13. Relational data
 ###############################################################################
+
+13.1 Introduction:
+    To work with relational data you need verbs that work with pairs of tables.
+        There are three families of verbs designed to work with relational data:
+
+            1. Mutating joins, which add new variables to one data frame from matching observations in another.
+            2. Filtering joins, which filter observations from one data frame based on whether or not they match an observation in the other table.
+            3. Set operations, which treat observations as if they were set elements.
+
+    Generally, dplyr is a little easier to use than SQL because dplyr is specialised to do data analysis: 
+        it makes common data analysis operations easier, at the expense of making it more difficult to do other things that aren’t commonly needed for data analysis.
+
+13.3 Keys:
+    The variables used to connect each pair of tables are called keys. A key is a variable (or set of variables) that uniquely identifies an observation.
+    There are two types of keys:
+        1. A primary key uniquely identifies an observation in its own table.
+            For example, planes$tailnum is a primary key because it uniquely identifies each plane in the planes table.
+        2. A foreign key uniquely identifies an observation in another table.
+            For example, the flights$tailnum is a foreign key because it appears in the flights table where it matches each flight to a unique plane.
+    If a table lacks a primary key, it’s sometimes useful to add one with mutate() and row_number().
+        This is called a surrogate key
+    A primary key and the corresponding foreign key in another table form a relation. Relations are typically one-to-many
+
+13.4 Mutating joins:
+     A mutating join allows you to combine variables from two tables.
+        It first matches observations by their keys, then copies across variables from one table to the other.
+            Like mutate(), the join functions add variables to the right, so if you have a lot of variables already, the new variables won’t get printed out.
+
+13.4.1 Understanding joins:
+    A join is a way of connecting each row in x to zero, one, or more rows in y
+
+13.4.2 Inner join
+    The simplest type of join is the inner join. An inner join matches pairs of observations whenever their keys are equal
+    The output of an inner join is a new data frame that contains the key, the x values, and the y values. We use 'by' to tell dplyr which variable is the key:
+        x %>% 
+            inner_join(y, by = "key")
+    The most important property of an inner join is that unmatched rows are not included in the result.
+        This means that generally inner joins are usually not appropriate for use in analysis because it’s too easy to lose observations.
+
+13.4.3 Outer joins:
+
+    An inner join keeps observations that appear in both tables. An outer join keeps observations that appear in at least one of the tables. 
+        There are three types of outer joins:
+
+            1. A left join keeps all observations in x.
+            2. A right join keeps all observations in y.
+            3. A full join keeps all observations in x and y.
+
+    The most commonly used join is the left join:
+        you use this whenever you look up additional data from another table, because it preserves the original observations even when there isn’t a match.
+            The left join should be your default join: use it unless you have a strong reason to prefer one of the others.
+
+13.4.4 Duplicate keys:
+    There are two possibilities:
+        1. One table has duplicate keys. This is useful when you want to add in additional information as there is typically a one-to-many relationship.
+        2. Both tables have duplicate keys. This is usually an error because in neither table do the keys uniquely identify an observation.
+            When you join duplicated keys, you get all possible combinations, the Cartesian product:
+
+13.4.5 Defining the key columns:
+    You can use other values for by to connect the tables in other ways:
+        1. The default, by = NULL, uses all variables that appear in both tables, the so called natural join.
+            For example, the flights and weather tables match on their common variables: year, month, day, hour and origin.
+                flights2 %>% 
+                    left_join(weather)
+        2. A character vector, by = "x". This is like a natural join, but uses only some of the common variables.
+            flights2 %>% 
+                left_join(planes, by = "tailnum")
+        3. A named character vector: by = c("a" = "b"). 
+            This will match variable a in table x to variable b in table y. 
+                The variables from x will be used in the output.
+                    flights2 %>% 
+                        left_join(airports, c("dest" = "faa"))
+                    flights2 %>% 
+                        left_join(airports, c("origin" = "faa"))
+
+
+13.4.7 Other implementations
+
+    base::merge() can perform all four types of mutating join:
+        dplyr 	            merge
+        inner_join(x, y) 	merge(x, y)
+        left_join(x, y) 	merge(x, y, all.x = TRUE)
+        right_join(x, y) 	merge(x, y, all.y = TRUE),
+        full_join(x, y) 	merge(x, y, all.x = TRUE, all.y = TRUE)
+
+    The advantages of the specific dplyr verbs is that they more clearly convey the intent of your code: 
+    the difference between the joins is really important but concealed in the arguments of merge(). 
+    dplyr’s joins are considerably faster and don’t mess with the order of the rows.
+
+    SQL is the inspiration for dplyr’s conventions, so the translation is straightforward:
+    dplyr 	                    SQL
+    inner_join(x, y, by = "z") 	SELECT * FROM x INNER JOIN y USING (z)
+    left_join(x, y, by = "z") 	SELECT * FROM x LEFT OUTER JOIN y USING (z)
+    right_join(x, y, by = "z") 	SELECT * FROM x RIGHT OUTER JOIN y USING (z)
+    full_join(x, y, by = "z") 	SELECT * FROM x FULL OUTER JOIN y USING (z)
+
+    SQL supports a wider range of join types than dplyr because you can connect the tables using constraints other than equality (sometimes called non-equijoins).
+
+13.5 Filtering joins:
+
+    Filtering joins match observations in the same way as mutating joins, but affect the observations, not the variables. There are two types:
+
+        1. semi_join(x, y) keeps all observations in x that have a match in y.
+        2. anti_join(x, y) drops all observations in x that have a match in y.
+
+    Semi-joins are useful for matching filtered summary tables back to the original rows. For example, imagine you’ve found the top ten most popular destinations:
+
+        top_dest <- flights %>%
+            count(dest, sort = TRUE) %>%
+            head(10)    
+    
+    Now you want to find each flight that went to one of those destinations. You could construct a filter yourself:
+        
+        flights %>% 
+            filter(dest %in% top_dest$dest)
+
+    The inverse of a semi-join is an anti-join. An anti-join keeps the rows that don’t have a match:
+        Anti-joins are useful for diagnosing join mismatches. 
