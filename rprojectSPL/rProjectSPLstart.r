@@ -760,4 +760,83 @@ The principles of tidy data seem so obvious that you might wonder if you’ll ev
             filter(dest %in% top_dest$dest)
 
     The inverse of a semi-join is an anti-join. An anti-join keeps the rows that don’t have a match:
-        Anti-joins are useful for diagnosing join mismatches. 
+        Anti-joins are useful for diagnosing join mismatches.
+
+13.6 Join problems:
+    There are a few things that you should do with your own data to make your joins go smoothly.
+        1. Start by identifying the variables that form the primary key in each table. 
+            You should usually do this based on your understanding of the data, not empirically by looking for a combination of variables that give a unique identifier. 
+                If you just look for variables without thinking about what they mean, you might get (un)lucky and find a combination that’s unique in your current data but the relationship might not be true in general.
+        2. Check that none of the variables in the primary key are missing. If a value is missing then it can’t identify an observation!
+        3. Check that your foreign keys match primary keys in another table. The best way to do this is with an anti_join(). 
+            It’s common for keys not to match because of data entry errors. Fixing these is often a lot of work.
+            If you do have missing keys, you’ll need to be thoughtful about your use of inner vs. outer joins, 
+                carefully considering whether or not you want to drop rows that don’t have a match.
+
+    Be aware that simply checking the number of rows before and after the join is not sufficient to ensure that your join has gone smoothly. 
+        If you have an inner join with duplicate keys in both tables, you might get unlucky as the number of dropped rows might exactly equal the number of duplicated rows!
+
+13.7 Set operations:
+
+    The final type of two-table verb are the set operations. Generally, I use these the least frequently, but they are occasionally useful when you want to break a single complex filter into simpler pieces. All these operations work with a complete row, comparing the values of every variable. These expect the x and y inputs to have the same variables, and treat the observations like sets:
+
+        1. intersect(x, y): return only observations in both x and y.
+            intersect(df1, df2)
+        2. union(x, y): return unique observations in x and y.
+            union(df1, df2)
+        3. setdiff(x, y): return observations in x, but not in y.
+            setdiff(df1, df2)
+
+###############################################################################
+14. Strings
+###############################################################################
+
+14.1 Introduction:
+    the focus of this chapter will be on regular expressions, or regexps for short. 
+        Regular expressions are useful because strings usually contain unstructured or semi-structured data, and regexps are a concise language for describing patterns in strings.
+
+14.2 String basics:
+    You can create strings with either single quotes or double quotes. U
+        nlike other languages, there is no difference in behaviour. 
+            I recommend always using ", unless you want to create a string that contains multiple ".
+                string1 <- "This is a string"
+                string2 <- 'If I want to include a "quote" inside a string, I use single quotes'
+    
+    To include a literal single or double quote in a string you can use \ to “escape” it:
+        double_quote <- "\"" # or '"'
+        single_quote <- '\'' # or "'"
+    That means if you want to include a literal backslash, you’ll need to double it up: "\\".
+    Beware that the printed representation of a string is not the same as string itself, 
+        because the printed representation shows the escapes. 
+            To see the raw contents of the string, use writeLines():
+    There are a handful of other special characters. 
+        The most common are "\n", newline, and "\t", tab, 
+            you can see the complete list by requesting help on ": ?'"', or ?"'".
+    Multiple strings are often stored in a character vector, which you can create with c():
+
+14.2.1 String length:
+    Base R contains many functions to work with strings but we’ll avoid them because they can be inconsistent, which makes them hard to remember.
+        Instead we’ll use functions from stringr.
+            These have more intuitive names, and all start with str_.
+                For example, str_length() tells you the number of characters in a string:
+
+14.2.2 Combining strings:
+    To combine two or more strings, use str_c():
+        str_c("x", "y")
+    Use the sep argument to control how they’re separated:
+        str_c("x", "y", sep = ", ")
+    Like most other functions in R, missing values are contagious. 
+        If you want them to print as "NA", use 
+            str_replace_na():
+    To collapse a vector of strings into a single string, use collapse:
+        str_c(c("x", "y", "z"), collapse = ", ")
+        
+14.2.3 Subsetting strings:
+        You can extract parts of a string using str_sub(). 
+            As well as the string, str_sub() takes start and end arguments which give the (inclusive) position of the substring:
+                x <- c("Apple", "Banana", "Pear")
+                str_sub(x, 1, 3)
+                #> [1] "App" "Ban" "Pea"
+
+        You can also use the assignment form of str_sub() to modify strings:
+            str_sub(x, 1, 1) <- str_to_lower(str_sub(x, 1, 1))                
