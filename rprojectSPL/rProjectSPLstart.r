@@ -839,4 +839,73 @@ The principles of tidy data seem so obvious that you might wonder if you’ll ev
                 #> [1] "App" "Ban" "Pea"
 
         You can also use the assignment form of str_sub() to modify strings:
-            str_sub(x, 1, 1) <- str_to_lower(str_sub(x, 1, 1))                
+            str_sub(x, 1, 1) <- str_to_lower(str_sub(x, 1, 1))
+
+14.3 Matching patterns with regular expressions:
+    To learn regular expressions, we’ll use str_view() and str_view_all()
+        14.3.1 Basic matches:
+            The simplest patterns match exact strings:
+                x <- c("apple", "banana", "pear")
+                str_view(x, "an")
+            The next step up in complexity is ., which matches any character (except a newline):
+                str_view(x, ".a.")
+            But if “.” matches any character, how do you match the character “.”?
+                You need to use an “escape” to tell the regular expression you want to match it exactly, not use its special behaviour. 
+                    So to match an ., you need the regexp \..
+            If \ is used as an escape character in regular expressions, how do you match a literal \? 
+                Well you need to escape it, creating the regular expression \\. 
+                    To create that regular expression, you need to use a string, which also needs to escape \. 
+                        That means to match a literal \ you need to write "\\\\" — you need four backslashes to match one!
+                            str_view(x, "\\\\")
+    14.3.2 Anchors:
+        It’s often useful to anchor the regular expression so that it matches from the start or end of the string. You can use:
+
+            ^ to match the start of the string.
+            $ to match the end of the string.
+
+        x <- c("apple", "banana", "pear")
+        str_view(x, "^a")
+        str_view(x, "a$")
+
+        To remember which is which, try this mnemonic which I learned from Evan Misshula: if you begin with power (^), you end up with money ($).
+            To force a regular expression to only match a complete string, anchor it with both ^ and $:
+                str_view(x, "^apple$")
+    
+    14.3.3 Character classes and alternatives:
+        There are a number of special patterns that match more than one character. You’ve already seen ., which matches any character apart from a newline. There are four other useful tools:
+
+            \d: matches any digit.
+            \s: matches any whitespace (e.g. space, tab, newline).
+            [abc]: matches a, b, or c.
+            [^abc]: matches anything except a, b, or c.
+
+        Remember, to create a regular expression containing \d or \s, you’ll need to escape the \ for the string, so you’ll type "\\d" or "\\s"
+
+        You can use alternation to pick between one or more alternative patterns. For example, abc|d..f will match either ‘“abc”’, or "deaf"
+            Like with mathematical expressions, if precedence ever gets confusing, use parentheses to make it clear what you want:
+                str_view(c("grey", "gray"), "gr(e|a)y")
+    
+    14.3.4 Repetition
+        The next step up in power involves controlling how many times a pattern matches:
+
+            ?: 0 or 1
+            +: 1 or more
+            *: 0 or more
+
+        You can also specify the number of matches precisely:
+
+            {n}: exactly n
+            {n,}: n or more
+            {,m}: at most m
+            {n,m}: between n and m
+
+        By default these matches are “greedy”: they will match the longest string possible. You can make them “lazy”, matching the shortest string possible by putting a ? after them. This is an advanced feature of regular expressions, but it’s useful to know that it exists:
+
+            str_view(x, 'C{2,3}?')
+    14.3.5 Grouping and backreferences
+
+        Earlier, you learned about parentheses as a way to disambiguate complex expressions. They also define “groups” that you can refer to with backreferences, like \1, \2 etc. For example, the following regular expression finds all fruits that have a repeated pair of letters.
+
+        str_view(fruit, "(..)\\1", match = TRUE)
+
+14.4 Tools
