@@ -1,0 +1,1 @@
+A simple SMA50/SMA200 crossover strategy, for the purpose of demoing the quantstrat package in [this article](http://www.vibesphere.com/2017/02/backtesting-a-simple-trading-strategy-in-r-with-quantstrat/).
